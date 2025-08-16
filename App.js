@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import Home from './components/Home';
-import { transform } from '@babel/core';
+
 
 const Stack = createStackNavigator();
 
