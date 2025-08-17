@@ -24,7 +24,7 @@ export const MOOD = [
   { emoji: '👍', name: 'Pouce levé', note: 'Exprime l’accord ou l’approbation.',color:COLORS.PouceLeve },
   { emoji: '🙏', name: 'Prière', note: 'Exprime la gratitude ou une requête.',color:COLORS.Priere },
   { emoji: '🎉', name: 'Fête', note: 'Exprime la célébration ou la joie.',color:COLORS.Fete },
-  { iemoji: '💤', name: 'Sommeil', note: 'Exprime la fatigue ou le besoin de repos.',color:COLORS.Sommeil },
+  { emoji: '💤', name: 'Sommeil', note: 'Exprime la fatigue ou le besoin de repos.',color:COLORS.Sommeil },
 ];
 
 export default { COLORS, MOOD };

@@ -3,6 +3,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import Home from './components/Home';
+import AddMood from './components/AddMood';
+import Historique from './components/Historique';
 
 
 const Stack = createStackNavigator();
@@ -34,6 +36,8 @@ export default function App() {
       >
 
       <Stack.Screen name='Home' component={Home}></Stack.Screen>
+      <Stack.Screen name='AddMood' component={AddMood}></Stack.Screen>
+      <Stack.Screen name='Historique' component={Historique}></Stack.Screen>
     </Stack.Navigator>
     </NavigationContainer>
   );
