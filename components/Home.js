@@ -1,183 +1,5 @@
-// import { Animated, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-// import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-// import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-// import React, { useEffect, useState } from 'react'
-// import { COLORS, MOOD } from '../src/Theme';
-
-// const Home = ({ navigation }) => {
-
-//   const [todayMood, setTodayMood] = useState({ mood: { emoji: '🤔', name: 'Réflexion', note: 'Exprime la pensée ou l’interrogation.',color:COLORS.Reflexion } });
-//   const [totalEntries, setTotalEntries] = useState(0);
-//   const [fadeAnim] = useState(new Animated.Value(0));
-//   const [translaleAnim] = useState(new Animated.Value(15));
-
-
-//   useEffect(() => {
-//     Animated.parallel([
-//       Animated.timing(fadeAnim, {
-//         toValue: 1,
-//         duration: 500,
-//         useNativeDriver: true
-//       }),
-//       Animated.timing(translaleAnim, {
-//         toValue: 1,
-//         duration: 450,
-//         useNativeDriver: true
-//       })
-//     ]).start()
-//   }, [])
-
-//   const selectMood = (mood) => {
-//     navigation.navigate("AddMood", { selectedMood: mood })
-//   }
-
-//   return (
-//     <SafeAreaView style={[styles.container]}>
-//       <StatusBar />
-//       <ScrollView contentContainerStyle={styles.scrollContain}>
-//         <Animated.View
-//           style={[
-//             styles.header,
-//             { opacity: fadeAnim, transform: [{ translateY: translaleAnim }] }
-//           ]}
-//         >
-//           <View>
-//             <Text>MoodJournal</Text>
-//           </View>
-//           <Text>Comment vous sentez vous aujourd'hui ?</Text>
-//         </Animated.View>
-
-//         {
-//           todayMood ? (
-//             <Animated.View>
-//               <View style={{ backgroundColor: todayMood.mood.color }}>
-//                 <View>
-//                   <Text>Aujourd'hui</Text>
-//                   <View>
-//                     <Text>{todayMood.mood.emoji}</Text>
-//                   </View>
-//                 </View>
-//                 <Text>{todayMood.mood.name}</Text>
-
-//                 <View>
-//                   <Text numberOfLines={2}>{todayMood.mood.note}</Text>
-//                 </View>
-
-
-//               </View>
-//             </Animated.View>
-//           ) : (
-//             null
-//           )
-//         }
-
-
-//         <Text>Selectionner votre Humeur</Text>
-//         <View>
-//           {
-//             MOOD?.map((mood, index) => {
-//               const delayedFadeAnim = new Animated.Value(0);
-//               const delayedTranslateAnim = new Animated.Value(20)
-
-//               Animated.parallel([
-//                 Animated.timing(delayedFadeAnim, {
-//                   toValue: 1,
-//                   duration: 400,
-//                   delay: index * 70,
-//                   useNativeDriver: true
-//                 }),
-//                 Animated.timing(delayedTranslateAnim, {
-//                   toValue: 0,
-//                   duration: 400,
-//                   delay: index * 70,
-//                   useNativeDriver: true
-//                 }),
-//               ]).start()
-
-//               return (
-//                 <Animated.View
-//                   key={index}
-//                   style={{
-//                     opacity: delayedFadeAnim,
-//                     transform: [{ translateX: delayedTranslateAnim }]
-//                   }}
-//                 >
-//                   <TouchableOpacity
-//                     style={styles.mmoodCard}
-//                     onPress={() => selectMood(mood)}
-//                     activeOpacity={0.7}
-//                   >
-//                     <View>
-//                       <View>
-//                         <Text>{mood.emoji}</Text>
-//                       </View>
-//                       <Text>{mood.name}</Text>
-//                     </View>
-
-//                   </TouchableOpacity>
-//                 </Animated.View>
-//               )
-//             })
-//           }
-//         </View>
-
-//         <View style={styles.BottomSection}>
-//           <View style={styles.statCard}>
-//                <FontAwesome5 name="history" size={24} color="black" />
-//                <View>{totalEntries}</View>
-//                <View>Total des entrées</View>
-//           </View>
-//         </View>
-
-//         <TouchableOpacity
-//           onPress={()=> navigation.navigate("Historique")}
-//           style={styles.buttonHistorique}
-//         >
-//           <View>
-//               <MaterialIcons name="details" size={24} color="black" />
-//               <Text>Voir historique</Text>
-//           </View>
-           
-//         </TouchableOpacity>
-//       </ScrollView>
-//     </SafeAreaView>
-//   )
-// }
-
-// export default Home
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "white"
-//   },
-//   scrollContain: {
-//     flexGrow: 1,
-//     paddingTop: 15,
-//     paddingBottom: 30
-//   },
-//   header: {
-//     //fontSize: 50,
-//     padding:80,
-//      margin:80,
-//   },
-//   buttonHistorique:{
-//      padding:70,
-//      margin:70,
-//   }
-// })
-
 import React, { useEffect, useState } from 'react';
-import {
-  Animated,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import { Animated, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View, TouchableOpacity, } from 'react-native';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { COLORS, MOOD } from '../src/Theme';
@@ -195,8 +17,6 @@ const Home = ({ navigation }) => {
 
   // Etat pour total des entrées, paramètre d'exemple
   const [totalEntries, setTotalEntries] = useState(10);
-
-  // Animations globales pour l'apparition du header
   const [fadeAnim] = useState(new Animated.Value(0));
   const [translateAnim] = useState(new Animated.Value(30));
 
@@ -224,7 +44,7 @@ const Home = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
-      <ScrollView  contentContainerStyle={styles.scrollContain} showsVerticalScrollIndicator={true} >
+      <ScrollView contentContainerStyle={styles.scrollContain} showsVerticalScrollIndicator={true} >
         {/* Header animé avec opacité et translation verticale */}
         <Animated.View
           style={[
@@ -284,19 +104,23 @@ const Home = ({ navigation }) => {
                   transform: [{ translateX: itemTranslateAnim }],
                 }}
               >
-                <TouchableOpacity
-                  style={[styles.moodCard, { backgroundColor: mood.color + '33' }]} // Couleur claire en fond
-                  onPress={() => selectMood(mood)}
-                  activeOpacity={0.7}
-                >
-                  <Text style={styles.moodEmoji}>{mood.emoji}</Text>
-                  <Text style={styles.moodName}>{mood.name}</Text>
-                </TouchableOpacity>
+                <View style={styles.contentMoodCard}>
+                  <TouchableOpacity
+                    style={[styles.moodCard, { backgroundColor: mood.color + '33' }]} // Couleur claire en fond
+                    onPress={() => selectMood(mood)}
+                    activeOpacity={0.7}
+                  >
+                    <View style={styles.coverMoodText}>
+                        <Text style={styles.moodEmoji}>{mood.emoji}</Text>
+                         <Text style={styles.moodName}>{mood.name}</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
               </Animated.View>
             );
           })}
         </View>
-        
+
 
         {/* Section stats avec icône et nombre */}
         <View style={styles.bottomSection}>
@@ -325,14 +149,14 @@ const Home = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-   // backgroundColor: COLORS.lightGray || '#F7F7F7', // Couleur douce pour le fond
-  
+    // backgroundColor: COLORS.lightGray || '#F7F7F7', // Couleur douce pour le fond
+
   },
   scrollContain: {
     flexGrow: 1,
     paddingVertical: 20,
     paddingHorizontal: 16,
-     backgroundColor: 'green',
+    // backgroundColor: 'green',
   },
   header: {
     marginBottom: 25,
@@ -388,20 +212,36 @@ const styles = StyleSheet.create({
   moodList: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+   // gap:5,
     marginBottom: 30,
+    //backgroundColor:"yellow"
+  },
+  contentMoodCard: {
+    //backgroundColor:"green",
+    justifyContent:"space-between",
+    gap:5,
+    //width: "100%",
   },
   moodCard: {
-    width: '48%',
-    paddingVertical: 20,
-    borderRadius: 15,
+    //width:"50%",
     marginBottom: 15,
-    alignItems: 'center',
+    borderRadius: 20,         // coins très arrondis, proche du cercle/ovale
+    alignItems: 'center',     // centre emoji et texte horizontalement
+    justifyContent: 'center', // centre verticalement si besoin
+    padding:15,
+    // Ombres Android
+    elevation: 3,
+    // Ombres iOS
     shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 6 },
-    shadowRadius: 10,
-    elevation: 6,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+  },
+  coverMoodText:{
+     alignItems: 'center',     // centre emoji et texte horizontalement
+   justifyContent: 'center', // centre verticalement si besoin
+    padding:30,
+    //backgroundColor:"red",
   },
   moodEmoji: {
     fontSize: 40,
@@ -410,8 +250,12 @@ const styles = StyleSheet.create({
   moodName: {
     fontSize: 18,
     fontWeight: '500',
+    textAlign: 'center',
     color: COLORS.primaryDark,
   },
+
+
+  
   bottomSection: {
     marginBottom: 30,
     alignItems: 'center',

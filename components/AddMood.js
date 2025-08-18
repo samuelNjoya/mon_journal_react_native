@@ -1,125 +1,134 @@
-// import { StyleSheet, Text, View } from 'react-native'
-// import React from 'react'
+import { Animated, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Feather from '@expo/vector-icons/Feather';
 
-// const AddMood = () => {
-//   return (
-//     <View>
-//       <Text>AddMood</Text>
-//     </View>
-//   )
-// }
+const AddMood = ({ navigation, route }) => {
 
-// export default AddMood
+  const { selectedMood } = route.params;
+  const [note, setNote] = useState("");
+  const [isloading, setIsloading] = useState("");
+  const [fadeAnim] = useState(new Animated.Value(0));
+  const [slideAnim] = useState(new Animated.Value(30));
 
-// const styles = StyleSheet.create({})
+ const saveMoodENtry = () => {
+    
+ }
 
-import React, { useState } from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  View,
-  Alert,
-  Platform,
-} from 'react-native';
-
-export default function BlockBreaker() {
-  const [score, setScore] = useState(0);
-
-  const blocks = Array.from({ length: 30 }, (_, i) => ({
-    id: i + 1,
-    value: Math.floor(Math.random() * 100) + 1,
-    color: i % 2 === 0 ? '#FF4C4C' : '#FF8C42',
-  }));
-
-  const onBlockPress = (value) => {
-    setScore(score + value);
-    Alert.alert('Bravo !', `Vous avez gagné ${value} points 🎉`, [{ text: 'OK' }]);
-  };
+  // Animation d'apparition du header et texte, sur le montage du composant
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 700,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 700,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
 
   return (
-    // SafeAreaView avec flex:1 pour prendre toute la fenêtre
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Jeu Casser les Blocs 💰</Text>
-        <Text style={styles.score}>Score : {score} €</Text>
-      </View>
+    <SafeAreaView>
+      <StatusBar barStyle="dark-content" />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? 'padding' : 'height'}
+          style={styles.KeyboardView}
+        >
 
-      {/* Wrapper général pour forcer la hauteur sur web */}
-      <View
-        style={[
-          styles.scrollWrapper,
-          Platform.OS === 'web' && { height: window.innerHeight },
-        ]}
-      >
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-          {blocks.map((block) => (
-            <TouchableOpacity
-              key={block.id}
-              style={[styles.block, { backgroundColor: block.color }]}
-              activeOpacity={0.7}
-              onPress={() => onBlockPress(block.value)}
+          <View style={styles.content}>
+            <Animated.View
+              style={[
+                styles.header,
+                { opacity: fadeAnim, transform: [{ translateY: slideAnim }] },
+              ]}
             >
-              <Text style={styles.blockText}>{block.value} €</Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
+              <TouchableOpacity
+                style={styles.buttonBack}
+                onPress={() => navigation.goBack()}
+                activeOpacity={0.7}
+              >
+                <AntDesign name="arrowleft" size={24} color="black" />
+                <Text>Retour</Text>
+              </TouchableOpacity>
+            </Animated.View>
+
+
+             <Animated.View
+              style={[
+                styles.moodSection,
+                { opacity: fadeAnim, transform: [{ translateY: slideAnim }] },
+              ]}
+            >
+              <TouchableOpacity>
+                 <View>
+                     <View>
+                         <View>
+                              <Text>{selectedMood.emoji}</Text>
+                         </View>
+                          <Text>{selectedMood.name}</Text>
+                     </View>
+                 </View>
+              </TouchableOpacity>
+            </Animated.View>
+
+            <Animated.View
+              style={[
+                styles.inputSection,
+                { opacity: fadeAnim, transform: [{ translateY: slideAnim }] },
+              ]}
+            >
+              <Text style={styles.textQuestion}>
+                    <Feather name="edit-3" size={24} color="black" />
+                    Que s'est il passé ?
+              </Text>
+              <View style={styles.inputGroup}>
+                 <TextInput
+                  style={styles.inputText}
+                  placeholder='Entrer votre humeur...'
+                  multiline
+                  value={note}
+                  onChangeText={setNote}
+                   numberOfLines={5}
+                   textAlignVertical='top'
+                 >
+
+                 </TextInput>
+              </View>
+            </Animated.View>
+
+
+            
+            <Animated.View
+              style={[
+                styles.inputSection,
+                { opacity: fadeAnim, transform: [{ translateY: slideAnim }] },
+              ]}
+            >
+              <TouchableOpacity
+              style={[styles.saveButton, isloading && styles.saveButtonDisabled]}
+              onPress={saveMoodENtry}
+              disabled={isloading}
+              activeOpacity={0.8}
+              >
+                  <Text>
+                     <Feather name="check" size={24} color="black" />
+                    {isloading ? 'Enregistrement...' : 'Enregistrer'}
+                  </Text>
+              </TouchableOpacity>
+
+            </Animated.View>
+          </View>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     </SafeAreaView>
-  );
+  )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f0f4f7',
-  },
-  header: {
-    padding: 20,
-    alignItems: 'center',
-    backgroundColor: '#0d47a1',
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: 'white',
-  },
-  score: {
-    fontSize: 18,
-    marginTop: 8,
-    color: '#ffeb3b',
-    fontWeight: '600',
-  },
-  scrollWrapper: {
-    flex: 1,
-    // Pas de hauteur fixe sur mobile mais forcée sur web par window.innerHeight
-  },
-  scrollContainer: {
-    paddingVertical: 20,
-    paddingHorizontal: 12,
-    flexGrow: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  },
-  block: {
-    width: '28%',
-    aspectRatio: 1,
-    margin: 8,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 6,
-    shadowColor: '#333',
-    shadowOffset: { width: 2, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-  },
-  blockText: {
-    fontSize: 24,
-    color: 'white',
-    fontWeight: 'bold',
-  },
-});
+export default AddMood
+
+const styles = StyleSheet.create({})
