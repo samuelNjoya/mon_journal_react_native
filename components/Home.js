@@ -1,19 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Animated, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View, TouchableOpacity, } from 'react-native';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { COLORS, MOOD } from '../src/Theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Home = ({ navigation }) => {
   // Etat de l'humeur du jour avec info emoji, nom, note et couleur
-  const [todayMood, setTodayMood] = useState({
-    mood: {
-      emoji: '🤔',
-      name: 'Réflexion',
-      note: 'Exprime la pensée ou l’interrogation.',
-      color: COLORS.Reflexion,
-    },
-  });
+  const [todayMood, setTodayMood] = useState(null);
 
   // Etat pour total des entrées, paramètre d'exemple
   const [totalEntries, setTotalEntries] = useState(10);
@@ -36,10 +31,46 @@ const Home = ({ navigation }) => {
     ]).start();
   }, []);
 
+  useFocusEffect(
+    useCallback(()=> {
+      loadTodayMood()
+      loadTotalEntry()
+      return ()=> {}
+    },[])
+  )
+
   // Fonction appelée lors du choix d'une humeur
   const selectMood = (mood) => {
     navigation.navigate('AddMood', { selectedMood: mood });
   };
+
+  const loadTodayMood = async () => {
+    try {
+      const today = new Date().toString();
+      const entries = await AsyncStorage.getItem("moodEntries")
+      if (entries) {
+        const parseEntries = JSON.parse(entries)
+        const todayEntry = parseEntries.find(entry => new Date(entry.date).toDateString() == today);
+        if (todayEntry) {
+          setTodayMood(todayEntry)
+        }
+      }
+    } catch (error) {
+      console.error("Erreu lors du chargement", error)
+    }
+  }
+
+  const loadTotalEntry = async () =>{
+     try {
+       const entries = await AsyncStorage.getItem("moodEntries")
+       if(entries){
+        const parseEntries = JSON.parse(entries)
+        setTotalEntries(parseEntries.length)
+       }
+     } catch (error) {
+       console.error("Erreu lors du chargement des total", error)
+     }
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -63,7 +94,7 @@ const Home = ({ navigation }) => {
             <Text style={styles.todayEmoji}>{todayMood.mood.emoji}</Text>
             <Text style={styles.todayName}>{todayMood.mood.name}</Text>
             <Text style={styles.todayNote} numberOfLines={2}>
-              {todayMood.mood.note}
+              {todayMood.note}
             </Text>
           </Animated.View>
         )}
@@ -111,8 +142,8 @@ const Home = ({ navigation }) => {
                     activeOpacity={0.7}
                   >
                     <View style={styles.coverMoodText}>
-                        <Text style={styles.moodEmoji}>{mood.emoji}</Text>
-                         <Text style={styles.moodName}>{mood.name}</Text>
+                      <Text style={styles.moodEmoji}>{mood.emoji}</Text>
+                      <Text style={styles.moodName}>{mood.name}</Text>
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -212,14 +243,14 @@ const styles = StyleSheet.create({
   moodList: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-   // gap:5,
+    // gap:5,
     marginBottom: 30,
     //backgroundColor:"yellow"
   },
   contentMoodCard: {
     //backgroundColor:"green",
-    justifyContent:"space-between",
-    gap:5,
+    justifyContent: "space-between",
+    gap: 5,
     //width: "100%",
   },
   moodCard: {
@@ -228,7 +259,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,         // coins très arrondis, proche du cercle/ovale
     alignItems: 'center',     // centre emoji et texte horizontalement
     justifyContent: 'center', // centre verticalement si besoin
-    padding:15,
+    padding: 15,
     // Ombres Android
     elevation: 3,
     // Ombres iOS
@@ -237,10 +268,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 8,
   },
-  coverMoodText:{
-     alignItems: 'center',     // centre emoji et texte horizontalement
-   justifyContent: 'center', // centre verticalement si besoin
-    padding:30,
+  coverMoodText: {
+    alignItems: 'center',     // centre emoji et texte horizontalement
+    justifyContent: 'center', // centre verticalement si besoin
+    padding: 30,
     //backgroundColor:"red",
   },
   moodEmoji: {
@@ -255,7 +286,7 @@ const styles = StyleSheet.create({
   },
 
 
-  
+
   bottomSection: {
     marginBottom: 30,
     alignItems: 'center',
