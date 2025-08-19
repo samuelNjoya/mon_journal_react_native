@@ -8,7 +8,7 @@ const AddMood = ({ navigation, route }) => {
 
   const { selectedMood } = route.params;
   const [note, setNote] = useState("");
-  const [isloading, setIsloading] = useState("");
+  const [isloading, setIsloading] = useState(false);
   const [fadeAnim] = useState(new Animated.Value(0));
   const [slideAnim] = useState(new Animated.Value(30));
 
@@ -21,26 +21,26 @@ const AddMood = ({ navigation, route }) => {
     try {
 
       const newEntry = {
-        id:Date.now().toString(),
-        mood:selectedMood,
-        note:note.trim(),
-        date:new Date.toString()
+        id: Date.now().toString(),
+        mood: selectedMood,
+        note: note.trim(),
+        date: new Date.toString()
       }
 
       const exitingEntries = await AsyncStorage.getItem('moodEntries');
-      const entries = exitingEntries ? JSON.parse(exitingEntries):[];
+      const entries = exitingEntries ? JSON.parse(exitingEntries) : [];
 
       const today = new Date().toDateString();
       const existingTodayIndex = entries.findIndex(entry => new Date(entry.date).toDateString() == today);
 
-      if(existingTodayIndex !==-1){
+      if (existingTodayIndex !== -1) {
         entries[existingTodayIndex] = newEntry
-      }else{
+      } else {
         entries.unshift(newEntry)
       }
-      await AsyncStorage.setItem('moodEntries',JSON.stringify(entries))
-      Alert.alert("Succes","Votre humeur à été enegistrer",
-        [{text:"OK", onPress:()=> navigation.goBack()}]
+      await AsyncStorage.setItem('moodEntries', JSON.stringify(entries))
+      Alert.alert("Succes", "Votre humeur à été enegistrer",
+        [{ text: "OK", onPress: () => navigation.goBack() }]
       )
 
     } catch (error) {
@@ -100,17 +100,16 @@ const AddMood = ({ navigation, route }) => {
                 { opacity: fadeAnim, transform: [{ translateY: slideAnim }] },
               ]}
             >
-              <TouchableOpacity>
-                <View>
+              <TouchableOpacity activeOpacity={0.95}>
+                <View style={{ alignItems: 'center', justifyContent:"center" }}>
                   <View>
-                    <View>
-                      <Text>{selectedMood.emoji}</Text>
-                    </View>
-                    <Text>{selectedMood.name}</Text>
+                    <Text style={styles.moodEmoji}>{selectedMood.emoji}</Text>
                   </View>
+                  <Text style={styles.moodName}>{selectedMood.name}</Text>
                 </View>
               </TouchableOpacity>
             </Animated.View>
+
 
             <Animated.View
               style={[
@@ -141,7 +140,7 @@ const AddMood = ({ navigation, route }) => {
 
             <Animated.View
               style={[
-                styles.inputSection,
+                styles.sectionButton,
                 { opacity: fadeAnim, transform: [{ translateY: slideAnim }] },
               ]}
             >
@@ -153,7 +152,7 @@ const AddMood = ({ navigation, route }) => {
               >
                 <Text>
                   <Feather name="check" size={24} color="black" />
-                  {isloading ? 'Enregistrement...' : 'Enregistrer'}
+                  {isloading ? 'Enregistrement...' : 'Enregistrer'} top
                 </Text>
               </TouchableOpacity>
 
@@ -167,4 +166,127 @@ const AddMood = ({ navigation, route }) => {
 
 export default AddMood
 
-const styles = StyleSheet.create({})
+const PRIMARY = '#4A90E2';             // Bleu principal
+const LIGHT = '#F9FAFB';               // Fond très clair
+const CARD = '#FFFFFF';                // Cards et intermédiaires
+const SHADOW = '#000000';              // Ombrage
+
+const styles = StyleSheet.create({
+  KeyboardView: {
+    flex: 1,
+    backgroundColor: LIGHT,
+  },
+  content: {
+    flex: 1,
+    padding: 24,
+    justifyContent: 'flex-start',
+  },
+  // --- Header design ---
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 32,
+    marginTop: 18,
+  },
+  buttonBack: {
+    flexDirection: 'row',
+    alignItems: 'center',
+   // backgroundColor: PRIMARY,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    shadowColor: SHADOW,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.09,
+    shadowRadius: 4,
+    elevation: 2,
+    height:100,
+    
+  },
+  // --- Mood section ---
+  moodSection: {
+    alignItems: 'center',
+    justifyContent:'center',
+    marginBottom: 32,
+    paddingBottom:60,
+    paddingTop:20,
+    backgroundColor: CARD,
+    borderRadius: 24,
+    shadowColor: SHADOW,
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.09,
+    shadowRadius: 8,
+    elevation: 3,
+    minWidth: 210,
+    minHeight: 110,
+  },
+  // Centrage emoji+nom
+  moodEmoji: {
+    paddingTop:10,
+    paddinBottom:6,
+    fontSize: 50,
+    //marginBottom: 5,
+  },
+  moodName: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: PRIMARY,
+    textAlign: 'center',
+    marginTop:15,
+    marginBottom: 2,
+  },
+  // --- Input section ---
+  inputSection: {
+    flexDirection:'columns',
+    display:"flex",
+    alignItems:"center",
+    justifyContent:"center",
+    marginBottom: 20,
+    //backgroundColor: "red",
+    borderRadius: 20,
+    padding: 18,
+    height:200,
+    borderRadius: 24,
+    shadowColor: SHADOW,
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.09,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  textQuestion: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: PRIMARY,
+    textAlign: 'center',
+  },
+  inputGroup: {
+    borderRadius: 12,
+    backgroundColor: LIGHT,
+    borderWidth: 1,
+    borderColor: '#e4e8ed',
+    padding: 8,
+    width:'100%',
+  },
+  inputText: {
+    fontSize: 16,
+    color: '#222',
+    backgroundColor: 'transparent',
+    minHeight: 70,
+    maxHeight: 140,
+    textAlignVertical: 'top',
+    padding: 0,
+  },
+  // --- Save button ---
+  saveButton: {
+    backgroundColor: PRIMARY,
+    borderRadius: 50,
+    paddingVertical: 18,
+    paddingHorizontal: 36,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 12,
+  },
+  saveButtonDisabled: {
+    backgroundColor: '#aacdf0',
+  },
+});

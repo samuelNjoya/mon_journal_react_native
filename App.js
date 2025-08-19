@@ -17,7 +17,7 @@ export default function App() {
       <StatusBar style="auto" />
       <Stack.Navigator
         screenOptions={{
-          headerShown: false,
+          headerShown: true,
           cardStyleInterpolator: ({ current, layouts }) =>{
             return {
               cardStyle:{
