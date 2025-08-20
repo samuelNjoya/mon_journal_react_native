@@ -14,7 +14,7 @@ const AddMood = ({ navigation, route }) => {
 
   const saveMoodENtry = async () => {
 
-    if (isloading) return;
+    if (isloading) return; //on ne resoumet pas s'il y'a le chargement
 
     setIsloading(true)
 
@@ -24,7 +24,7 @@ const AddMood = ({ navigation, route }) => {
         id: Date.now().toString(),
         mood: selectedMood,
         note: note.trim(),
-        date: new Date.toString()
+        date: new Date().toISOString()
       }
 
       const exitingEntries = await AsyncStorage.getItem('moodEntries');
@@ -44,8 +44,8 @@ const AddMood = ({ navigation, route }) => {
       )
 
     } catch (error) {
-      console.error("Erreur lors de la sauvegarde");
-      Alert.alert("Erreur", "Impossible de charger votre humeur", error);
+      console.error("Erreur lors de la sauvegarde", error);
+      Alert.alert("Erreur", "Impossible de charger votre humeur");
     } finally {
       setIsloading(false)
     }
@@ -101,7 +101,7 @@ const AddMood = ({ navigation, route }) => {
               ]}
             >
               <TouchableOpacity activeOpacity={0.95}>
-                <View style={{ alignItems: 'center', justifyContent:"center" }}>
+                <View style={{ alignItems: 'center', justifyContent: "center" }}>
                   <View>
                     <Text style={styles.moodEmoji}>{selectedMood.emoji}</Text>
                   </View>
@@ -150,10 +150,12 @@ const AddMood = ({ navigation, route }) => {
                 disabled={isloading}
                 activeOpacity={0.8}
               >
-                <Text>
+                <View>
                   <Feather name="check" size={24} color="black" />
-                  {isloading ? 'Enregistrement...' : 'Enregistrer'} top
-                </Text>
+                  <Text>
+                    {isloading ? 'Enregistrement...' : 'Enregistrer'}
+                  </Text>
+                </View>
               </TouchableOpacity>
 
             </Animated.View>
@@ -191,7 +193,7 @@ const styles = StyleSheet.create({
   buttonBack: {
     flexDirection: 'row',
     alignItems: 'center',
-   // backgroundColor: PRIMARY,
+    // backgroundColor: PRIMARY,
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 8,
@@ -200,16 +202,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.09,
     shadowRadius: 4,
     elevation: 2,
-    height:100,
-    
+    height: 100,
+
   },
   // --- Mood section ---
   moodSection: {
     alignItems: 'center',
-    justifyContent:'center',
+    justifyContent: 'center',
     marginBottom: 32,
-    paddingBottom:60,
-    paddingTop:20,
+    paddingBottom: 60,
+    paddingTop: 20,
     backgroundColor: CARD,
     borderRadius: 24,
     shadowColor: SHADOW,
@@ -222,8 +224,8 @@ const styles = StyleSheet.create({
   },
   // Centrage emoji+nom
   moodEmoji: {
-    paddingTop:10,
-    paddinBottom:6,
+    paddingTop: 10,
+    paddinBottom: 6,
     fontSize: 50,
     //marginBottom: 5,
   },
@@ -232,20 +234,20 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: PRIMARY,
     textAlign: 'center',
-    marginTop:15,
+    marginTop: 15,
     marginBottom: 2,
   },
   // --- Input section ---
   inputSection: {
-    flexDirection:'columns',
-    display:"flex",
-    alignItems:"center",
-    justifyContent:"center",
+    flexDirection: 'columns',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 20,
     //backgroundColor: "red",
     borderRadius: 20,
     padding: 18,
-    height:200,
+    height: 200,
     borderRadius: 24,
     shadowColor: SHADOW,
     shadowOffset: { width: 0, height: 5 },
@@ -265,7 +267,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#e4e8ed',
     padding: 8,
-    width:'100%',
+    width: '100%',
   },
   inputText: {
     fontSize: 16,
