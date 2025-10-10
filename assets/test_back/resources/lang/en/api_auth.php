@@ -1,0 +1,30 @@
+<?php
+
+return [
+
+    'phone_used_title' => 'Phone number not available',
+    'phone_used_msg' => 'Sorry, the :phone_number is already assigned to a SesamPayx customer. Please contact +237670034545 for more informations',
+    'sms_auth_code' => 'Authentication code : :code. Valid for 10 minutes.',
+    'incorect_auth_code_title' => 'Incorrect authentication code',
+    'incorect_auth_code_msg' => 'Sorry, the authentication code you entered for the phone number :phone_number is not correct.',
+    'auth_code_expired_title' => 'Expired authentication code',
+    'auth_code_expired_msg' => 'Sorry this Authentication Code has expired',
+    'error' => 'Error',
+    'server_error_title' => 'Internal Error!',
+    'server_error_msg' => 'Error occurred in the server',
+    'welcome_sms' => 'Welcome to the SesamPayx platform dear :name. Your account has been created successfully.',
+    'usr_or_psw_incorrect' => 'Incorrect user or password',
+    'account_inexist' => 'This account does not exist',
+    'no_access_right_title' => 'You don\'t have access rights',
+    'no_access_right_msg' => 'Your account does not have access rights to the SesamPayx platform. Please contact customer service or contact our sales outlets for more information.',
+    'new_login_sms' => 'New connection to your SesamPayx account',
+    'incorrect_answer_number_title' => 'Wrong answer numbers!',
+    'incorrect_answer_number_msg' => 'You have replied to an incorrect number of replies',
+    'incorrect_answer_title' => 'Incorrect(s) answer(s)!',
+    'incorrect_answer_msg' => 'You didn\'t answer all the questions correctly',
+    'sms_validation_code' => 'Validation code: :code .',
+    'not_existing_code' => 'This code is incorrect.',
+    'code_used' => 'This code has already been used.',
+    'revoked_code' => 'That code has been revoked.',
+    'expired_code' => 'This code has expired.',
+];

@@ -1,0 +1,30 @@
+<?php
+
+return [
+
+    'phone_used_title' => 'Numéro de téléphone non disponible',
+    'phone_used_msg' => 'Désolé, le numéro de téléphone :phone_number est déjà attribué à un client SesamPayx. Veuillez contacter l\'assistance au numéro suivant +237670034545',
+    'sms_auth_code' => 'Code d\'authentification : :code. Valide 10 minutes.',
+    'incorect_auth_code_title' => 'Code d\'authentification incorrect',
+    'incorect_auth_code_msg' => 'Désolé, le code d\'authentification que vous avez entré pour le numéro de téléphone :phone_number est incorrect',
+    'auth_code_expired_title' => 'Code d\'authentification expiré',
+    'auth_code_expired_msg' => 'Désolé ce Code d\'authentification a expiré',
+    'error' => 'Erreur!',
+    'server_error_title' => 'Erreur Interne!',
+    'server_error_msg' => 'Erreur survenue dans le serveur',
+    'welcome_sms' => 'Bienvenue sur la plateforme SesamPayx cher(e) :name. La création de votre compte client s\'est bien effectuée!',
+    'usr_or_psw_incorrect' => 'Utilisateur ou mot de passe incorrect',
+    'account_inexist' => 'Ce compte n\'existe pas',
+    'no_access_right_title' => 'Vous ne disposez pas des droits d\'accèss',
+    'no_access_right_msg' => 'Votre compte ne dispose pas de droit d\'accèss à la plateforme SesamPayx. Veuillez contacter le service client ou rapprochez vous de nos points de vente pour plus d\'informations',
+    'new_login_sms' => 'Nouvelle connexion sur votre compte SesamPayx',
+    'incorrect_answer_number_title' => 'Nombre de reponses incorrect!',
+    'incorrect_answer_number_msg' => 'Vous avez repondu à un nombre incorrect de reponses',
+    'incorrect_answer_title' => 'Reponse(s) incorrect(s)!',
+    'incorrect_answer_msg' => 'Vous n\'avez pas repondu correctement à toutes les questions posées',
+    'sms_validation_code' => 'code de validation: :code .',
+    'not_existing_code' => 'Ce code est incorrect.',
+    'code_used' => 'Ce code a déjà été utilisé.',
+    'revoked_code' => 'Ce code a été revoqué.',
+    'expired_code' => 'Ce code a expiré.',
+];
