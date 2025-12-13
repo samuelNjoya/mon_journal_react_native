@@ -1,0 +1,18 @@
+comment installer microsoft office ?
+
+https://www.youtube.com/watch?v=TBaO3lAK6C8
+
+how to make data table export bootstrap 5
+https://www.youtube.com/watch?v=EKSPK_Zk9X8
+https://datatables.net/examples/styling/bootstrap5.html
+
+pour reduire la taille du projet prefer-dist 
+composer create-project --prefer-dist laravel/laravel nom_du_projet "11.*"
+
+
+librairie laravel permettant d'éffectué le paiyement en ligne
+composer require laravel/cashier
+
+
+gerok Samuel#123@123)
+TinyPNG et Squoosh pour compresser les images
