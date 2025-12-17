@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartGame - Apprends en t'amusant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="logo.png">
+    <style>
+        /* Variables CSS */
+        :root {
+            --primary: #4a6fff;
+            --primary-dark: #3050e0;
+            --secondary: #ff6b9d;
+            --accent: #6c5ce7;
+            --light: #f8f9ff;
+            --dark: #1a1a2e;
+            --gray: #8a8ca5;
+            --success: #00d68f;
+            --warning: #ffaa00;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --shadow-hover: rgba(0, 0, 0, 0.15);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        /* Reset et styles de base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            background-color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            color: var(--gray);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 16px 32px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            color: white;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 6px 20px rgba(74, 111, 255, 0.25);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(74, 111, 255, 0.35);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .btn:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, var(--primary-dark), var(--accent));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn:hover:after {
+            opacity: 1;
+        }
+
+        .btn i {
+            margin-right: 8px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes float2 {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        @keyframes float3 {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .animate-float2 {
+            animation: float2 5s ease-in-out infinite;
+        }
+
+        .animate-float3 {
+            animation: float3 7s ease-in-out infinite;
+        }
+
+        /* Section Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #f8f9ff 0%, #eef1ff 100%);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Bulles flottantes en arrière-plan */
+        .floating-bubbles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(74, 111, 255, 0.1), rgba(108, 92, 231, 0.05));
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        .bubble:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 10%;
+            animation: float 15s linear infinite;
+        }
+
+        .bubble:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            left: 85%;
+            animation: float2 18s linear infinite;
+        }
+
+        .bubble:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            top: 80%;
+            left: 15%;
+            animation: float3 12s linear infinite;
+        }
+
+        .bubble:nth-child(4) {
+            width: 100px;
+            height: 100px;
+            top: 20%;
+            left: 75%;
+            animation: float 20s linear infinite reverse;
+        }
+
+        .bubble:nth-child(5) {
+            width: 70px;
+            height: 70px;
+            top: 70%;
+            left: 90%;
+            animation: float2 16s linear infinite;
+        }
+
+        .bubble:nth-child(6) {
+            width: 90px;
+            height: 90px;
+            top: 85%;
+            left: 60%;
+            animation: float3 14s linear infinite reverse;
+        }
+
+        .hero-content {
+            flex: 1;
+            padding-right: 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            color: var(--dark);
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.2s forwards;
+        }
+
+        .hero .slogan {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 30px;
+            font-weight: 500;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.4s forwards;
+        }
+
+        .hero .description {
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.6s forwards;
+        }
+
+        .hero .btn-download {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.8s forwards;
+            padding: 18px 40px;
+            font-size: 1.2rem;
+        }
+
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-logo-container {
+            width: 300px;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ffffff, #f8f9ff);
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(74, 111, 255, 0.2);
+            overflow: hidden;
+            padding: 20px;
+            opacity: 0;
+            animation: fadeIn 1s ease 1s forwards, pulse 3s ease-in-out infinite 2s;
+        }
+
+        .hero-logo {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 15px;
+        }
+
+        /* Messages de téléchargement */
+        .download-message {
+            margin-top: 15px;
+            padding: 12px 20px;
+            border-radius: var(--radius);
+            font-weight: 500;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .download-message i {
+            font-size: 1.2rem;
+        }
+
+        .download-message.progress {
+            background-color: rgba(255, 170, 0, 0.1);
+            color: var(--warning);
+            border-left: 4px solid var(--warning);
+        }
+
+        .download-message.success {
+            background-color: rgba(0, 214, 143, 0.1);
+            color: var(--success);
+            border-left: 4px solid var(--success);
+        }
+
+        .download-progress {
+            width: 100%;
+            height: 8px;
+            background-color: #eee;
+            border-radius: 4px;
+            margin-top: 15px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .download-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, var(--warning), var(--success));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* Section Carousel */
+        .carousel-section {
+            background-color: white;
+        }
+
+        .carousel-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius);
+            box-shadow: 0 15px 40px var(--shadow);
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            position: relative;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .slide-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 15px;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            color: var(--dark);
+            transition: var(--transition);
+            z-index: 10;
+        }
+
+        .carousel-btn:hover {
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .carousel-btn.prev {
+            left: 20px;
+        }
+
+        .carousel-btn.next {
+            right: 20px;
+        }
+
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ddd;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .indicator.active {
+            background-color: var(--primary);
+            transform: scale(1.2);
+        }
+
+        /* Section Fonctionnalités améliorée */
+        .features {
+            background: linear-gradient(135deg, #f8f9ff 0%, #eef1ff 100%);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
+            gap: 25px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 40px 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px var(--shadow);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(30px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+        }
+
+        .feature-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px var(--shadow-hover);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 25px;
+            font-size: 2rem;
+            color: white;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+
+        /* Section Compatibilité */
+        .compatibility {
+            background-color: white;
+        }
+
+        .compatibility-content {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 50px;
+            background: linear-gradient(135deg, #f8f9ff 0%, #eef1ff 100%);
+            border-radius: var(--radius);
+            box-shadow: 0 15px 40px var(--shadow);
+        }
+
+        .android-icon {
+            font-size: 4rem;
+            color: #3DDC84;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .compatibility-warning {
+            background-color: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-top: 25px;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            text-align: left;
+        }
+
+        .compatibility-warning p {
+            margin-bottom: 0;
+            color: #856404;
+        }
+
+        /* Footer amélioré */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 40px;
+        }
+
+        .footer-logo {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-logo img {
+            max-width: 120px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+        }
+
+        .footer-logo p {
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 300px;
+        }
+
+        .footer-links {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .footer-links h4 {
+            color: white;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-links h4:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+        }
+
+        .footer-links ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links ul li a {
+            color: rgba(255, 255, 255, 0.7);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links ul li a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .footer-contact {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .social-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .social-icon:hover {
+            background-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .social-icon.whatsapp {
+            background-color: rgba(37, 211, 102, 0.2);
+        }
+
+        .social-icon.whatsapp:hover {
+            background-color: #25D366;
+        }
+
+        .copyright {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            margin-top: 40px;
+            text-align: center;
+            width: 100%;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            h1 {
+                font-size: 2.8rem;
+            }
+            
+            h2 {
+                font-size: 2.2rem;
+            }
+            
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding: 100px 0 60px;
+            }
+            
+            .hero-content {
+                padding-right: 0;
+                margin-bottom: 50px;
+            }
+            
+            .hero-logo-container {
+                width: 250px;
+                height: 250px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links h4:after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .footer-links ul li a {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.3rem;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+            }
+            
+            section {
+                padding: 60px 0;
+            }
+            
+            .carousel-slide img {
+                height: 350px;
+            }
+            
+            .compatibility-content {
+                padding: 30px 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .hero .slogan {
+                font-size: 1.3rem;
+            }
+            
+            .btn {
+                padding: 14px 28px;
+                font-size: 1rem;
+            }
+            
+            .carousel-slide img {
+                height: 250px;
+            }
+            
+            .carousel-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Section Hero -->
+    <section class="hero" id="hero">
+        <!-- Bulles flottantes en arrière-plan -->
+        <div class="floating-bubbles">
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+        </div>
+        
+        <div class="container" style="display: flex; align-items: center;">
+            <div class="hero-content">
+                <h1 class="animate-fade-in-up">SmartGame</h1>
+                <p class="slogan animate-fade-in-up">Apprends en t'amusant</p>
+                <p class="description animate-fade-in-up">
+                    L'application éducative qui transforme l'apprentissage en aventure ludique. 
+                    Des jeux captivants, des défis stimulants et des connaissances à acquérir 
+                    dans un environnement coloré et interactif.
+                </p>
+                <button class="btn btn-download" id="downloadBtn">
+                    <i class="fas fa-download"></i> Télécharger SmartGame (APK)
+                </button>
+                
+                <!-- Messages de téléchargement -->
+                <div class="download-message progress" id="downloadProgressMessage">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Téléchargement en cours... Veuillez patienter</span>
+                </div>
+                
+                <div class="download-message success" id="downloadSuccessMessage">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Téléchargement terminé ! Vérifiez vos téléchargements</span>
+                </div>
+                
+                <!-- Barre de progression -->
+                <div class="download-progress" id="downloadProgress">
+                    <div class="download-progress-bar" id="downloadProgressBar"></div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="hero-logo-container">
+                    <!-- Logo de l'application -->
+                    <img src="logo.png" alt="Logo SmartGame" class="hero-logo" id="appLogo">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Carousel -->
+    <section class="carousel-section" id="screenshots">
+        <div class="container">
+            <h2>Galerie du jeu</h2>
+            <div class="carousel-container">
+                <div class="carousel" id="carousel">
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="SmartGame - Écran de jeu 1">
+                        <div class="slide-caption">Interface colorée et intuitive</div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80" alt="SmartGame - Écran de jeu 2">
+                        <div class="slide-caption">Défis éducatifs variés</div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="SmartGame - Écran de jeu 3">
+                        <div class="slide-caption">Système de récompenses motivant</div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="SmartGame - Écran de jeu 4">
+                        <div class="slide-caption">Suivi des progrès détaillé</div>
+                    </div>
+                </div>
+                <button class="carousel-btn prev" id="prevBtn">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="carousel-btn next" id="nextBtn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <div class="carousel-indicators" id="indicators">
+                <!-- Les indicateurs seront générés par JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Fonctionnalités améliorée -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2>Fonctionnalités Premium</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3>Jeux Éducatifs Intelligents</h3>
+                    <p>Une collection exclusive de jeux conçus par des experts pédagogiques pour développer les compétences cognitives tout en s'amusant.</p>
+                    <!-- <button class="btn btn-small">Découvrir</button> -->
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Améliore la Mémoire</h3>
+                    <p>Des exercices spécialisés utilisant des techniques avancées de mémorisation pour renforcer la mémoire et la concentration.</p>
+                    <!-- <button class="btn btn-small">En savoir plus</button> -->
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-stopwatch"></i>
+                    </div>
+                    <h3>Défis Chronométrés</h3>
+                    <p>Affrontez le temps pour résoudre des énigmes complexes et améliorer votre rapidité de réflexion et prise de décision.</p>
+                    <!-- <button class="btn btn-small">Essayer</button> -->
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3>Système de Score Avancé</h3>
+                    <p>Gagnez des points, débloquez des niveaux exclusifs et comparez vos performances avec une communauté mondiale de joueurs.</p>
+                    <!-- <button class="btn btn-small">Voir les classements</button> -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Compatibilité -->
+    <section class="compatibility" id="compatibility">
+        <div class="container">
+            <h2>Compatibilité</h2>
+            <div class="compatibility-content">
+                <div class="android-icon">
+                    <i class="fab fa-android"></i>
+                </div>
+                <h3>Compatible Android uniquement</h3>
+                <p>SmartGame est optimisé pour les appareils Android (version 5.0 et supérieures).</p>
+                <p>L'application est disponible uniquement via le fichier APK pour le moment.</p>
+                
+                <div class="compatibility-warning">
+                    <p><i class="fas fa-exclamation-circle"></i> <strong>Installation manuelle requise :</strong> Après le téléchargement, autorisez l'installation d'applications depuis des sources inconnues dans les paramètres de sécurité de votre appareil Android.</p>
+                </div>
+                
+                <div class="download-section">
+                    <button class="btn" id="secondaryDownloadBtn">
+                        <i class="fas fa-download"></i> Télécharger l'APK maintenant
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer amélioré -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="logo.png" alt="Logo SmartGame">
+                    <h3>SmartGame</h3>
+                    <p>Apprends en t'amusant avec notre application éducative innovante conçue pour stimuler l'intelligence tout en s'amusant.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Liens Rapides</h4>
+                    <ul>
+                        <li><a href="#hero"><i class="fas fa-chevron-right"></i> Accueil</a></li>
+                        <li><a href="#screenshots"><i class="fas fa-chevron-right"></i> Galerie</a></li>
+                        <li><a href="#features"><i class="fas fa-chevron-right"></i> Fonctionnalités</a></li>
+                        <li><a href="#compatibility"><i class="fas fa-chevron-right"></i> Compatibilité</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h4>Contact & Support</h4>
+                    <p>Pour toute question ou assistance, contactez-nous :</p>
+                    
+                    <div class="social-icons">
+                        <a href="https://wa.me/237690373513" target="_blank" class="social-icon whatsapp">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                    
+                    <p style="margin-top: 20px; font-size: 0.9rem; color: rgba(255, 255, 255, 0.7);">
+                        <i class="fas fa-phone-alt"></i> +237 690 37 35 13
+                    </p>
+                </div>
+                
+                <p class="copyright">© 2025 SmartGame. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ====================
+        // GESTION DU CARROUSEL
+        // ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            const carousel = document.getElementById('carousel');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const indicatorsContainer = document.getElementById('indicators');
+            const slides = document.querySelectorAll('.carousel-slide');
+            
+            let currentSlide = 0;
+            let slideInterval;
+            const slideCount = slides.length;
+            
+            // Créer les indicateurs
+            for (let i = 0; i < slideCount; i++) {
+                const indicator = document.createElement('div');
+                indicator.classList.add('indicator');
+                if (i === 0) indicator.classList.add('active');
+                indicator.addEventListener('click', () => goToSlide(i));
+                indicatorsContainer.appendChild(indicator);
+            }
+            
+            const indicators = document.querySelectorAll('.indicator');
+            
+            // Fonction pour aller à un slide spécifique
+            function goToSlide(n) {
+                currentSlide = (n + slideCount) % slideCount;
+                carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+                
+                // Mettre à jour les indicateurs
+                indicators.forEach((indicator, index) => {
+                    indicator.classList.toggle('active', index === currentSlide);
+                });
+                
+                // Redémarrer l'intervalle après une interaction manuelle
+                resetInterval();
+            }
+            
+            // Fonction pour passer au slide suivant
+            function nextSlide() {
+                goToSlide(currentSlide + 1);
+            }
+            
+            // Fonction pour passer au slide précédent
+            function prevSlide() {
+                goToSlide(currentSlide - 1);
+            }
+            
+            // Redémarrer l'intervalle automatique
+            function resetInterval() {
+                clearInterval(slideInterval);
+                slideInterval = setInterval(nextSlide, 5000);
+            }
+            
+            // Événements des boutons
+            prevBtn.addEventListener('click', prevSlide);
+            nextBtn.addEventListener('click', nextSlide);
+            
+            // Démarrer le défilement automatique
+            slideInterval = setInterval(nextSlide, 5000);
+            
+            // Arrêter le défilement automatique au survol
+            carousel.addEventListener('mouseenter', () => clearInterval(slideInterval));
+            carousel.addEventListener('mouseleave', () => resetInterval());
+            
+            // ====================
+            // ANIMATIONS AU SCROLL
+            // ====================
+            const featureCards = document.querySelectorAll('.feature-card');
+            
+            function checkScroll() {
+                featureCards.forEach(card => {
+                    const cardTop = card.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (cardTop < windowHeight - 100) {
+                        card.classList.add('visible');
+                    }
+                });
+            }
+            
+            // Vérifier la position au chargement et au défilement
+            window.addEventListener('scroll', checkScroll);
+            window.addEventListener('load', checkScroll);
+            
+            // ====================
+            // TÉLÉCHARGEMENT APK AVEC MESSAGES
+            // ====================
+            const downloadBtn = document.getElementById('downloadBtn');
+            const secondaryDownloadBtn = document.getElementById('secondaryDownloadBtn');
+            const downloadProgress = document.getElementById('downloadProgress');
+            const downloadProgressBar = document.getElementById('downloadProgressBar');
+            const downloadProgressMessage = document.getElementById('downloadProgressMessage');
+            const downloadSuccessMessage = document.getElementById('downloadSuccessMessage');
+            
+            // Fonction pour simuler le téléchargement
+            function simulateDownload() {
+                // Cacher les messages précédents
+                downloadProgressMessage.style.display = 'none';
+                downloadSuccessMessage.style.display = 'none';
+                
+                // Afficher le message de progression
+                downloadProgressMessage.style.display = 'flex';
+                
+                // Montrer la barre de progression
+                downloadProgress.style.display = 'block';
+                downloadProgressBar.style.width = '0%';
+                
+                // Animation de progression
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += Math.random() * 10 + 5;
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(interval);
+                        
+                        // Cacher la barre de progression et le message de progression
+                        setTimeout(() => {
+                            downloadProgress.style.display = 'none';
+                            downloadProgressMessage.style.display = 'none';
+                            
+                            // Afficher le message de succès
+                            downloadSuccessMessage.style.display = 'flex';
+                            
+                            // Cacher le message de succès après 5 secondes
+                            setTimeout(() => {
+                                downloadSuccessMessage.style.display = 'none';
+                            }, 5000);
+                        }, 500);
+                        
+                        // Après simulation, déclencher le téléchargement réel
+                        setTimeout(() => {
+                            // Créer un lien de téléchargement
+                            const link = document.createElement('a');
+                            link.href = 'smartgame.apk'; // Le fichier doit être dans le même dossier
+                            link.download = 'smartgame.apk';
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                        }, 500);
+                    }
+                    
+                    downloadProgressBar.style.width = `${progress}%`;
+                }, 100);
+                
+                // Animation du bouton
+                const btn = event.target.closest('.btn');
+                btn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    btn.style.transform = '';
+                }, 200);
+            }
+            
+            // Ajouter les événements de téléchargement
+            downloadBtn.addEventListener('click', simulateDownload);
+            secondaryDownloadBtn.addEventListener('click', simulateDownload);
+            
+            // ====================
+            // GESTION DU LOGO (image par défaut si logo.png n'existe pas)
+            // ====================
+            const appLogo = document.getElementById('appLogo');
+            const footerLogo = document.querySelector('.footer-logo img');
+            
+            // Vérifier si le logo existe, sinon utiliser un logo par défaut
+            appLogo.onerror = function() {
+                // Créer un logo SVG par défaut
+                const svgLogo = `
+                    <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="200" height="200" rx="30" fill="url(#gradient)"/>
+                        <path d="M70 80L100 110L130 80" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M70 120L100 150L130 120" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+                        <defs>
+                            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#4a6fff"/>
+                                <stop offset="100%" stop-color="#6c5ce7"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                `;
+                
+                // Convertir le SVG en URL de données
+                const svgBlob = new Blob([svgLogo], {type: 'image/svg+xml'});
+                const svgUrl = URL.createObjectURL(svgBlob);
+                
+                // Remplacer le logo par le SVG
+                appLogo.src = svgUrl;
+                footerLogo.src = svgUrl;
+            };
+            
+            // ====================
+            // NAVIGATION SMOOTH
+            // ====================
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
