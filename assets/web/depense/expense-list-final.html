@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historique des Dépenses</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- jQuery pour AJAX -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <style>
+        :root {
+            --yellow_color: #ffc107;
+            --primary-hover: #e0a800;
+            --danger-color: #dc3545;
+            --success-color: #198754;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --border-color: #dee2e6;
+            --bg-light: #f8f9fa;
+            --bg-item: #f8f9fa;
+            --blue-color: #0d6efd;
+            --green-color: #198754;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Carte principale */
+        .expense-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        /* Header sans accordéon */
+        .card-header {
+            background: linear-gradient(135deg, var(--yellow_color) 0%, #ffd54f 100%);
+            color: var(--text-primary);
+            padding: 18px 25px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header h2 {
+            font-weight: 600;
+            font-size: 20px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Contenu de la carte */
+        .card-body-content {
+            padding: 25px;
+        }
+
+        /* Barre de recherche et filtres */
+        .search-filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            z-index: 1;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .search-box input:focus {
+            border-color: var(--yellow_color);
+            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+            outline: none;
+        }
+
+        .filter-btn {
+            padding: 12px 20px;
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--yellow_color);
+            background-color: var(--bg-light);
+        }
+
+        .filter-btn.active {
+            border-color: var(--yellow_color);
+            background-color: rgba(255, 193, 7, 0.1);
+        }
+
+        /* Panneau de filtres - RESPONSIVE AMÉLIORÉ */
+        .filters-panel {
+            background: var(--bg-light);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            display: none;
+        }
+
+        .filters-panel.show {
+            display: block;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Grille de filtres responsive */
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .filters-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+
+        .filter-group {
+            margin-bottom: 15px;
+        }
+
+        .filter-label {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            display: block;
+            font-size: 14px;
+        }
+
+        .filter-input, .filter-select {
+            width: 100%;
+            padding: 10px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .filter-input:focus, .filter-select:focus {
+            border-color: var(--yellow_color);
+            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+            outline: none;
+        }
+
+        /* Groupe de dates */
+        .date-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        @media (max-width: 576px) {
+            .date-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .date-group .filter-input {
+                width: 100%;
+            }
+        }
+
+        .date-separator {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Slider de montant */
+        .amount-slider-container {
+            padding: 10px 0;
+        }
+
+        .amount-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .amount-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .amount-inputs {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 576px) {
+            .amount-inputs {
+                flex-direction: column;
+            }
+            
+            .amount-inputs input {
+                width: 100%;
+            }
+        }
+
+        .amount-range-container {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            background: var(--border-color);
+            border-radius: 3px;
+            outline: none;
+            margin: 10px 0;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--yellow_color);
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* Boutons de filtres */
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        @media (max-width: 576px) {
+            .filter-actions {
+                flex-direction: column;
+            }
+            
+            .filter-actions button {
+                width: 100%;
+            }
+        }
+
+        .btn-clear {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-clear:hover {
+            background-color: var(--bg-light);
+            border-color: var(--text-secondary);
+        }
+
+        .btn-apply {
+            padding: 10px 20px;
+            background: var(--yellow_color);
+            border: none;
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-apply:hover {
+            background: var(--primary-hover);
+        }
+
+        /* Tags de filtres actifs */
+        .active-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #EFF6FF;
+            border-radius: 8px;
+            border-left: 4px solid var(--blue-color);
+        }
+
+        @media (max-width: 576px) {
+            .active-filters {
+                flex-direction: column;
+            }
+        }
+
+        .filter-tag {
+            background: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            border: 1px solid #BFDBFE;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .filter-tag .remove {
+            color: var(--danger-color);
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* Tableau des dépenses */
+        .expense-table-container {
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: white;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .expense-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+
+        @media (max-width: 768px) {
+            .expense-table {
+                min-width: 800px;
+            }
+        }
+
+        .expense-table thead {
+            background: var(--bg-light);
+        }
+
+        .expense-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border-color);
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .expense-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+            font-size: 14px;
+        }
+
+        .expense-table tbody tr {
+            transition: background-color 0.2s;
+        }
+
+        .expense-table tbody tr:hover {
+            background-color: var(--bg-light);
+        }
+
+        /* Ligne de dépense récurrente */
+        .recurring-row {
+            border-left: 4px solid var(--yellow_color);
+        }
+
+        /* Cellules de la table */
+        .category-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .expense-label {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .expense-details {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .amount-cell {
+            font-weight: 600;
+            color: var(--danger-color);
+            white-space: nowrap;
+        }
+
+        .actions-cell {
+            display: flex;
+            gap: 8px;
+            flex-wrap: nowrap;
+        }
+
+        @media (max-width: 576px) {
+            .actions-cell {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 16px;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .btn-view {
+            background: rgba(13, 110, 253, 0.1);
+            color: var(--blue-color);
+        }
+
+        .btn-duplicate {
+            background: rgba(108, 117, 125, 0.1);
+            color: var(--text-secondary);
+           
+        }
+
+        .btn-stop {
+            background: rgba(25, 135, 84, 0.1);
+            color: var(--green-color);
+        }
+
+        .btn-delete {
+            background: rgba(220, 53, 69, 0.1);
+            color: var(--danger-color);
+        }
+
+        /* Badge récurrent */
+        .recurring-badge {
+            background: rgba(255, 193, 7, 0.1);
+            color: var(--text-primary);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* État vide */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            color: #dee2e6;
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+
+        .empty-state h4 {
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .empty-state p {
+            font-style: italic;
+            font-size: 15px;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        /* PAGINATION RESPONSIVE AMÉLIORÉE */
+        .pagination-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: white;
+            border-top: 1px solid var(--border-color);
+            border-radius: 0 0 10px 10px;
+        }
+
+        @media (max-width: 768px) {
+            .pagination-container {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+            
+            .pagination-info {
+                text-align: center;
+                order: 3;
+                margin-top: 10px;
+            }
+            
+            .pagination-controls {
+                order: 1;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            
+            .items-per-page {
+                order: 2;
+                justify-content: center;
+            }
+        }
+
+        .pagination-info {
+            font-size: 14px;
+            color: var(--text-secondary);
+            min-width: 200px;
+        }
+
+        .pagination-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            padding: 10px 16px;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            min-width: 45px;
+            justify-content: center;
+        }
+
+        @media (max-width: 576px) {
+            .page-btn {
+                padding: 8px 12px;
+                font-size: 14px;
+                min-width: 40px;
+            }
+            
+            .page-btn .btn-text {
+                display: none;
+            }
+            
+            .page-btn i {
+                margin: 0;
+            }
+        }
+
+        .page-btn:hover:not(:disabled) {
+            background: var(--bg-light);
+            border-color: var(--yellow_color);
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .items-per-page {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+        }
+
+        .items-per-page select {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            min-width: 70px;
+        }
+
+        /* Spinner */
+        .spinner-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            display: none;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--yellow_color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .spinner-text {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        /* Toast notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            min-width: 300px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        @media (max-width: 576px) {
+            .toast-container {
+                left: 20px;
+                right: 20px;
+            }
+            
+            .toast {
+                min-width: auto;
+                width: 100%;
+            }
+        }
+
+        /* Modal de confirmation AJAX */
+        .ajax-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1500;
+            display: none;
+        }
+
+        .ajax-modal-overlay.show {
+            display: flex;
+        }
+
+        .ajax-modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .ajax-modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--yellow_color);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ajax-modal-header.warning {
+            background: #ffc107;
+        }
+
+        .ajax-modal-header.danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .ajax-modal-header.success {
+            background: #198754;
+            color: white;
+        }
+
+        .ajax-modal-body {
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .ajax-modal-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .ajax-modal-icon.warning {
+            color: #ffc107;
+        }
+
+        .ajax-modal-icon.danger {
+            color: #dc3545;
+        }
+
+        .ajax-modal-icon.info {
+            color: #0d6efd;
+        }
+
+        .ajax-modal-title {
+            font-weight: 600;
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .ajax-modal-message {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .ajax-modal-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .ajax-modal-btn {
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-size: 16px;
+            min-width: 120px;
+        }
+
+        .ajax-modal-btn-cancel {
+            background: white;
+            border: 2px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .ajax-modal-btn-cancel:hover {
+            background: var(--bg-light);
+            border-color: var(--text-secondary);
+        }
+
+        .ajax-modal-btn-confirm {
+            background: var(--yellow_color);
+            color: var(--text-primary);
+        }
+
+        .ajax-modal-btn-confirm.danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .ajax-modal-btn-confirm.warning {
+            background: #ffc107;
+            color: var(--text-primary);
+        }
+
+        .ajax-modal-btn-confirm.success {
+            background: #198754;
+            color: white;
+        }
+
+        .ajax-modal-btn-confirm:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .ajax-modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .ajax-modal-close.danger {
+            color: white;
+        }
+
+        .ajax-modal-close.success {
+            color: white;
+        }
+
+        /* Modal des détails */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--yellow_color);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .expense-detail-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .detail-value {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Loading overlay */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            border-radius: 10px;
+        }
+
+        /* Responsive Design général */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .main-container {
+                padding: 0;
+            }
+            
+            .card-body-content {
+                padding: 15px;
+            }
+            
+            .search-filter-bar {
+                flex-direction: column;
+            }
+            
+            .search-box {
+                min-width: 100%;
+            }
+            
+            .filter-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .ajax-modal-actions {
+                flex-direction: column;
+            }
+            
+            .ajax-modal-btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .action-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+            }
+            
+            .expense-table th,
+            .expense-table td {
+                padding: 10px;
+                font-size: 13px;
+            }
+            
+            .ajax-modal-content {
+                width: 95%;
+            }
+            
+            .ajax-modal-body {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Carte principale -->
+        <div class="expense-card">
+            <!-- Header sans accordéon -->
+            <div class="card-header">
+                <h2>
+                    <i class="bi bi-clock-history"></i>
+                    Historique des Dépenses
+                    <span class="badge bg-warning ms-2" id="expenseCount">0</span>
+                </h2>
+            </div>
+
+            <!-- Contenu de la carte -->
+            <div class="card-body-content">
+                <!-- Barre de recherche et filtres -->
+                <div class="search-filter-bar">
+                    <div class="search-box">
+                        <i class="bi bi-search"></i>
+                        <input type="text" 
+                               id="searchInput" 
+                               placeholder="Rechercher une dépense..."
+                               class="form-control">
+                    </div>
+                    <button class="filter-btn" id="filterToggleBtn">
+                        <i class="bi bi-funnel"></i>
+                        <span class="btn-text">Filtres</span>
+                        <span class="badge bg-warning ms-1" id="activeFilterCount" style="display: none;">0</span>
+                    </button>
+                </div>
+
+                <!-- Panneau de filtres -->
+                <div class="filters-panel" id="filtersPanel">
+                    <div class="filters-grid">
+                        <!-- Dates -->
+                        <div class="filter-group">
+                            <label class="filter-label">Période</label>
+                            <div class="date-group">
+                                <input type="date" id="startDate" class="filter-input">
+                                <span class="date-separator">au</span>
+                                <input type="date" id="endDate" class="filter-input">
+                            </div>
+                        </div>
+
+                        <!-- Budget -->
+                        <div class="filter-group">
+                            <label class="filter-label">Budget</label>
+                            <select id="budgetFilter" class="filter-select">
+                                <option value="0">Tous les budgets</option>
+                                <!-- Les budgets seront chargés ici dynamiquement -->
+                            </select>
+                        </div>
+
+                        <!-- Catégorie -->
+                        <div class="filter-group">
+                            <label class="filter-label">Catégorie</label>
+                            <select id="categoryFilter" class="filter-select">
+                                <option value="0">Toutes les catégories</option>
+                                <!-- Les catégories seront chargées ici dynamiquement -->
+                            </select>
+                        </div>
+
+                        <!-- Montant -->
+                        <div class="filter-group">
+                            <label class="filter-label">Plage de montant (FCFA)</label>
+                            <div class="amount-slider-container">
+                                <div class="amount-labels">
+                                    <span class="amount-label" id="minAmountLabel">0 FCFA</span>
+                                    <span class="amount-label" id="maxAmountLabel">1,000,000 FCFA</span>
+                                </div>
+                                <div class="amount-inputs">
+                                    <input type="number" 
+                                           id="minAmountInput" 
+                                           class="filter-input" 
+                                           style="width: 100px;"
+                                           placeholder="Min"
+                                           min="0"
+                                           max="1000000">
+                                    <div class="amount-range-container">
+                                        <input type="range" 
+                                               id="amountRange" 
+                                               min="0" 
+                                               max="1000000" 
+                                               step="1000">
+                                    </div>
+                                    <input type="number" 
+                                           id="maxAmountInput" 
+                                           class="filter-input" 
+                                           style="width: 100px;"
+                                           placeholder="Max"
+                                           min="0"
+                                           max="1000000">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Boutons d'action -->
+                    <div class="filter-actions">
+                        <button type="button" class="btn-clear" id="clearFiltersBtn">
+                            <i class="bi bi-x-circle"></i> <span class="btn-text">Effacer tout</span>
+                        </button>
+                        <button type="button" class="btn-apply" id="applyFiltersBtn">
+                            <i class="bi bi-check-circle"></i> <span class="btn-text">Appliquer</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tags de filtres actifs -->
+                <div class="active-filters" id="activeFilters" style="display: none;">
+                    <!-- Les tags seront ajoutés ici dynamiquement -->
+                </div>
+
+                <!-- Tableau des dépenses -->
+                <div class="expense-table-container">
+                    <!-- Loading overlay -->
+                    <div class="loading-overlay" id="tableLoading" style="display: none;">
+                        <div class="spinner-border text-warning" role="status">
+                            <span class="visually-hidden">Chargement...</span>
+                        </div>
+                    </div>
+
+                    <!-- Table -->
+                    <table class="expense-table" id="expenseTable">
+                        <thead>
+                            <tr>
+                                <th>Catégorie</th>
+                                <th>Libellé</th>
+                                <th>Date</th>
+                                <th>Budget</th>
+                                <th>Montant</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expenseTableBody">
+                            <!-- Les dépenses seront chargées ici dynamiquement -->
+                        </tbody>
+                    </table>
+
+                    <!-- État vide -->
+                    <div class="empty-state" id="emptyState">
+                        <i class="bi bi-inbox"></i>
+                        <h4>Aucune dépense trouvée</h4>
+    
+                    </div>
+                </div>
+
+                <!-- PAGINATION SIMPLIFIÉE -->
+                <div class="pagination-container" id="paginationContainer" style="display: none;">
+                    <div class="pagination-controls">
+                        <button class="page-btn" id="firstPageBtn" disabled>
+                            <i class="bi bi-chevron-double-left"></i>
+                            <span class="btn-text">Première</span>
+                        </button>
+                        <button class="page-btn" id="prevPageBtn" disabled>
+                            <i class="bi bi-chevron-left"></i>
+                            <span class="btn-text">Précédent</span>
+                        </button>
+                        <button class="page-btn" id="nextPageBtn" disabled>
+                            <span class="btn-text">Suivant</span>
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                        <button class="page-btn" id="lastPageBtn" disabled>
+                            <span class="btn-text">Dernière</span>
+                            <i class="bi bi-chevron-double-right"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="items-per-page">
+                        <span class="btn-text">Afficher</span>
+                        <select id="itemsPerPageSelect">
+                            <option value="10">10</option>
+                            <option value="25" selected>25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                        <span class="btn-text">par page</span>
+                    </div>
+                    
+                    <div class="pagination-info" id="paginationInfo">
+                        <span id="startIndex">1</span>-<span id="endIndex">10</span> sur <span id="totalItems">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Spinner global -->
+    <div class="spinner-overlay" id="spinnerOverlay">
+        <div class="spinner"></div>
+        <div class="spinner-text" id="spinnerText">Chargement...</div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Modal des détails de dépense -->
+    <div class="modal-overlay" id="expenseDetailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mb-0">
+                    <i class="bi bi-receipt"></i>
+                    Détails de la dépense
+                </h5>
+                <button class="modal-close" id="closeDetailModal">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="expenseDetailBody">
+                <!-- Les détails seront chargés ici dynamiquement -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal AJAX pour les confirmations -->
+    <div class="ajax-modal-overlay" id="ajaxModal">
+        <div class="ajax-modal-content">
+            <div class="ajax-modal-header" id="ajaxModalHeader">
+                <h5 class="modal-title mb-0" id="ajaxModalTitle">Confirmation</h5>
+                <button class="ajax-modal-close" id="ajaxModalClose">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            <div class="ajax-modal-body">
+                <div class="ajax-modal-icon" id="ajaxModalIcon">
+                    <i class="bi bi-question-circle"></i>
+                </div>
+                <h3 class="ajax-modal-title" id="ajaxModalMainTitle">Êtes-vous sûr ?</h3>
+                <p class="ajax-modal-message" id="ajaxModalMessage">
+                    Cette action est irréversible. Voulez-vous vraiment continuer ?
+                </p>
+                <div class="ajax-modal-actions">
+                    <button class="ajax-modal-btn ajax-modal-btn-cancel" id="ajaxModalCancelBtn">
+                        Annuler
+                    </button>
+                    <button class="ajax-modal-btn ajax-modal-btn-confirm" id="ajaxModalConfirmBtn">
+                        Confirmer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="expense-list-final.js"></script>
+</body>
+</html>

@@ -1,0 +1,473 @@
+<!-- components/CategoryForm.html -->
+<div class="category-form-container">
+    <form id="category-form" class="category-form">
+        <div class="form-header">
+            <h3 id="form-title">Nouvelle Catégorie</h3>
+            <button type="button" class="btn-close" id="form-close-btn">
+                <i class="material-icons">close</i>
+            </button>
+        </div>
+        
+        <div class="form-group">
+            <label for="category-name">Nom de la catégorie</label>
+            <input 
+                type="text" 
+                id="category-name" 
+                name="name" 
+                placeholder="Ex: Nourriture, Transport..."
+                required
+                autocomplete="off"
+            >
+            <div class="error-message" id="name-error"></div>
+        </div>
+        
+        <div class="form-group">
+            <label for="category-icon">Icône</label>
+            <div class="icon-selector">
+                <div class="icon-preview" id="icon-preview">
+                    <i class="material-icons" id="current-icon">restaurant</i>
+                </div>
+                <select id="category-icon" name="icon">
+                    <option value="restaurant">🍴 Restaurant</option>
+                    <option value="directions_car">🚗 Transport</option>
+                    <option value="home">🏠 Logement</option>
+                    <option value="shopping_cart">🛒 Courses</option>
+                    <option value="local_hospital">🏥 Santé</option>
+                    <option value="sports_esports">🎮 Loisirs</option>
+                    <option value="school">📚 Éducation</option>
+                    <option value="flight">✈️ Voyage</option>
+                    <option value="paid">💰 Salaire</option>
+                    <option value="attach_money">💵 Autre</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="button" class="btn btn-secondary" id="cancel-btn">
+                Annuler
+            </button>
+            <button type="submit" class="btn btn-primary" id="submit-btn">
+                <span id="submit-text">Créer</span>
+                <div class="spinner-small hidden" id="submit-spinner"></div>
+            </button>
+        </div>
+        
+        <!-- Aperçu -->
+        <div class="preview-section" id="preview-section">
+            <h4>Aperçu :</h4>
+            <div class="category-preview">
+                <div class="preview-icon" id="preview-icon">
+                    <i class="material-icons">restaurant</i>
+                </div>
+                <span id="preview-name">Nom de la catégorie</span>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+.category-form-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+    color: white;
+}
+
+.form-header h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.btn-close:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.form-group {
+    padding: 15px 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-group input[type="text"],
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border 0.3s;
+}
+
+.form-group input[type="text"]:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #ffc107;
+    box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.1);
+}
+
+.icon-selector {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.icon-preview {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    background: #ffc107;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 28px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    padding: 20px;
+    border-top: 1px solid #f0f0f0;
+    justify-content: flex-end;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-secondary {
+    background: #f8f9fa;
+    color: #495057;
+    border: 1px solid #dee2e6;
+}
+
+.btn-secondary:hover {
+    background: #e9ecef;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+    color: white;
+    min-width: 120px;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #ffb300 0%, #ffa000 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 179, 0, 0.3);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.spinner-small {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s linear infinite;
+}
+
+.preview-section {
+    padding: 20px;
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+}
+
+.preview-section h4 {
+    margin-bottom: 15px;
+    color: #495057;
+}
+
+.category-preview {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.preview-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    background: #ffc107;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+    min-height: 20px;
+}
+</style>
+
+<script>
+// CategoryForm.js - Logique du formulaire
+class CategoryForm {
+    constructor(containerId, options = {}) {
+        this.container = document.getElementById(containerId);
+        this.options = options;
+        this.isEditMode = options.editMode || false;
+        this.categoryId = options.categoryId || null;
+        this.onSubmit = options.onSubmit || null;
+        this.onCancel = options.onCancel || null;
+        
+        this.init();
+    }
+    
+    init() {
+        this.render();
+        this.bindEvents();
+        this.updatePreview();
+    }
+    
+    render() {
+        this.container.innerHTML = document.querySelector('#category-form-template')?.innerHTML || '';
+    }
+    
+    bindEvents() {
+        const form = this.container.querySelector('#category-form');
+        const nameInput = this.container.querySelector('#category-name');
+        const iconSelect = this.container.querySelector('#category-icon');
+        const cancelBtn = this.container.querySelector('#cancel-btn');
+        const closeBtn = this.container.querySelector('#form-close-btn');
+        
+        if (form) {
+            form.addEventListener('submit', this.handleSubmit.bind(this));
+        }
+        
+        if (nameInput) {
+            nameInput.addEventListener('input', this.updatePreview.bind(this));
+        }
+        
+        if (iconSelect) {
+            iconSelect.addEventListener('change', this.updatePreview.bind(this));
+        }
+        
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', () => {
+                if (this.onCancel) this.onCancel();
+            });
+        }
+        
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                if (this.onCancel) this.onCancel();
+            });
+        }
+        
+        // Initialiser les valeurs si mode édition
+        if (this.isEditMode && this.options.categoryData) {
+            this.fillForm(this.options.categoryData);
+        }
+    }
+    
+    fillForm(categoryData) {
+        const nameInput = this.container.querySelector('#category-name');
+        const iconSelect = this.container.querySelector('#category-icon');
+        const formTitle = this.container.querySelector('#form-title');
+        const submitText = this.container.querySelector('#submit-text');
+        
+        if (nameInput) nameInput.value = categoryData.nom || '';
+        if (iconSelect) iconSelect.value = categoryData.icon || 'restaurant';
+        if (formTitle) formTitle.textContent = 'Modifier la Catégorie';
+        if (submitText) submitText.textContent = 'Modifier';
+        
+        this.updatePreview();
+    }
+    
+    updatePreview() {
+        const nameInput = this.container.querySelector('#category-name');
+        const iconSelect = this.container.querySelector('#category-icon');
+        const previewName = this.container.querySelector('#preview-name');
+        const previewIcon = this.container.querySelector('#preview-icon');
+        const currentIcon = this.container.querySelector('#current-icon');
+        
+        if (!nameInput || !iconSelect) return;
+        
+        const name = nameInput.value || 'Nom de la catégorie';
+        const icon = iconSelect.value || 'restaurant';
+        
+        // Générer une couleur basée sur le nom
+        const color = this.stringToColor(name);
+        
+        if (previewName) previewName.textContent = name;
+        if (previewIcon) {
+            previewIcon.innerHTML = `<i class="material-icons">${icon}</i>`;
+            previewIcon.style.backgroundColor = color;
+        }
+        if (currentIcon) {
+            currentIcon.textContent = icon;
+        }
+    }
+    
+    stringToColor(str) {
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            hash = str.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        
+        const r = (hash >> 0) & 0xff;
+        const g = (hash >> 8) & 0xff;
+        const b = (hash >> 16) & 0xff;
+        
+        return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+    }
+    
+    validateForm() {
+        const nameInput = this.container.querySelector('#category-name');
+        const errorElement = this.container.querySelector('#name-error');
+        
+        if (!nameInput) return false;
+        
+        const name = nameInput.value.trim();
+        let isValid = true;
+        let errorMessage = '';
+        
+        if (!name) {
+            errorMessage = 'Le nom de la catégorie est requis';
+            isValid = false;
+        } else if (name.length < 2) {
+            errorMessage = 'Le nom doit avoir au moins 2 caractères';
+            isValid = false;
+        } else if (name.length > 50) {
+            errorMessage = 'Le nom ne doit pas dépasser 50 caractères';
+            isValid = false;
+        }
+        
+        if (errorElement) {
+            errorElement.textContent = errorMessage;
+            errorElement.style.display = errorMessage ? 'block' : 'none';
+        }
+        
+        return isValid;
+    }
+    
+    async handleSubmit(event) {
+        event.preventDefault();
+        
+        if (!this.validateForm()) return;
+        
+        const nameInput = this.container.querySelector('#category-name');
+        const iconSelect = this.container.querySelector('#category-icon');
+        const submitBtn = this.container.querySelector('#submit-btn');
+        const submitSpinner = this.container.querySelector('#submit-spinner');
+        const submitText = this.container.querySelector('#submit-text');
+        
+        if (!nameInput || !iconSelect) return;
+        
+        // Désactiver le bouton et afficher le spinner
+        if (submitBtn) submitBtn.disabled = true;
+        if (submitSpinner) submitSpinner.classList.remove('hidden');
+        if (submitText) submitText.textContent = 'Traitement...';
+        
+        try {
+            const categoryData = {
+                id: this.categoryId,
+                nom: nameInput.value.trim(),
+                icon: iconSelect.value,
+                color: this.stringToColor(nameInput.value.trim()),
+                type: 1
+            };
+            
+            if (this.onSubmit) {
+                await this.onSubmit(categoryData);
+            }
+            
+        } catch (error) {
+            console.error('Erreur lors de la soumission:', error);
+            this.showError(error.message || 'Une erreur est survenue');
+        } finally {
+            // Réactiver le bouton
+            if (submitBtn) submitBtn.disabled = false;
+            if (submitSpinner) submitSpinner.classList.add('hidden');
+            if (submitText) {
+                submitText.textContent = this.isEditMode ? 'Modifier' : 'Créer';
+            }
+        }
+    }
+    
+    showError(message) {
+        const errorElement = this.container.querySelector('#name-error');
+        if (errorElement) {
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+    }
+    
+    destroy() {
+        const form = this.container.querySelector('#category-form');
+        if (form) {
+            form.removeEventListener('submit', this.handleSubmit);
+        }
+        this.container.innerHTML = '';
+    }
+}
+
+// Template HTML pour le formulaire
+const categoryFormTemplate = document.createElement('template');
+categoryFormTemplate.innerHTML = `
+<div class="category-form-container">
+    <!-- Le contenu HTML du formulaire ci-dessus -->
+</div>
+`;
+
+// Exporter la classe
+if (typeof module !== 'undefined') {
+    module.exports = CategoryForm;
+} else {
+    window.CategoryForm = CategoryForm;
+}
+</script>

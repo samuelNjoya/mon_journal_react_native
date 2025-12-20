@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Test CORS Catégories</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: sans-serif; padding: 20px; background: #f0f2f5; }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ffc107;
+        }
+        
+        .cors-options {
+            background: #fff8e1;
+            border: 1px solid #ffd54f;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .option-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        
+        button {
+            background: #ffc107;
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 10px;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #ffb300;
+        }
+        
+        .btn-test {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .btn-test:hover {
+            background: #45a049;
+        }
+        
+        .results {
+            margin-top: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .log-entry {
+            padding: 8px;
+            margin-bottom: 5px;
+            border-left: 4px solid #ffc107;
+            background: white;
+        }
+        
+        .log-error {
+            border-left-color: #f44336;
+            background: #ffebee;
+        }
+        
+        .log-success {
+            border-left-color: #4CAF50;
+            background: #e8f5e9;
+        }
+        
+        .categories-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .category-item {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Test CORS - API Catégories</h1>
+        
+        <div class="cors-options">
+            <h3>Options de connexion API</h3>
+            
+            <div class="option-group">
+                <label for="api-url">URL de l'API :</label>
+                <input type="text" id="api-url" value="http://192.168.1.162:8000/api/categorie">
+            </div>
+            
+            <div class="option-group">
+                <label for="cors-method">Méthode CORS :</label>
+                <select id="cors-method">
+                    <option value="direct">Direct (test CORS)</option>
+                    <option value="proxy">Proxy CORS</option>
+                    <option value="jsonp">JSONP (si supporté)</option>
+                    <option value="no-cors">Mode no-cors (limité)</option>
+                </select>
+            </div>
+            
+            <div class="option-group" id="proxy-group" style="display: none;">
+                <label for="proxy-url">URL du proxy :</label>
+                <input type="text" id="proxy-url" value="https://cors-anywhere.herokuapp.com/">
+                <small>Note: Cliquez sur "Activer Proxy" si c'est votre première utilisation</small>
+            </div>
+            
+            <button onclick="testConnection()">🔗 Tester la connexion</button>
+            <button onclick="fetchCategories()" class="btn-test">📋 Récupérer les catégories</button>
+            <button onclick="clearLogs()">🗑️ Effacer les logs</button>
+            <button onclick="enableProxy()" id="enable-proxy-btn">🔓 Activer Proxy</button>
+        </div>
+        
+        <div class="results">
+            <h3>📝 Logs de débogage</h3>
+            <div id="log-container"></div>
+        </div>
+        
+        <div id="categories-container">
+            <h3>📂 Catégories récupérées</h3>
+            <div id="categories-list" class="categories-list"></div>
+        </div>
+    </div>
+
+    <script>
+        // Éléments DOM
+        const apiUrlInput = document.getElementById('api-url');
+        const corsMethodSelect = document.getElementById('cors-method');
+        const proxyGroup = document.getElementById('proxy-group');
+        const proxyUrlInput = document.getElementById('proxy-url');
+        const logContainer = document.getElementById('log-container');
+        const categoriesList = document.getElementById('categories-list');
+        const enableProxyBtn = document.getElementById('enable-proxy-btn');
+        
+        // Écouteurs d'événements
+        corsMethodSelect.addEventListener('change', function() {
+            proxyGroup.style.display = this.value === 'proxy' ? 'block' : 'none';
+            enableProxyBtn.style.display = this.value === 'proxy' ? 'inline-block' : 'none';
+        });
+        
+        // Logging
+        function addLog(message, type = 'info') {
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry log-${type}`;
+            logEntry.innerHTML = `
+                <strong>[${new Date().toLocaleTimeString()}]</strong>
+                ${message}
+            `;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+        
+        function clearLogs() {
+            logContainer.innerHTML = '';
+            categoriesList.innerHTML = '';
+        }
+        
+        // Activer le proxy CORS (nécessaire pour cors-anywhere)
+        function enableProxy() {
+            window.open('https://cors-anywhere.herokuapp.com/corsdemo', '_blank');
+            addLog('🌍 Ouverture de la page d\'activation du proxy...', 'info');
+        }
+        
+        // Tester la connexion simple
+        async function testConnection() {
+            const url = apiUrlInput.value;
+            const method = corsMethodSelect.value;
+            
+            addLog(`🔍 Test de connexion: ${method} -> ${url}`, 'info');
+            
+            try {
+                let testUrl = url;
+                
+                if (method === 'proxy') {
+                    testUrl = proxyUrlInput.value + url;
+                    addLog(`🔄 Utilisation du proxy: ${testUrl}`, 'info');
+                }
+                
+                const startTime = Date.now();
+                const response = await fetch(testUrl, {
+                    method: 'GET',
+                    mode: method === 'no-cors' ? 'no-cors' : 'cors',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                const endTime = Date.now();
+                
+                if (method === 'no-cors') {
+                    addLog(`✅ Requête no-cors envoyée (temps: ${endTime - startTime}ms)`, 'info');
+                    addLog('⚠️ Mode no-cors: Impossible de lire la réponse', 'warning');
+                    return;
+                }
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                
+                addLog(`✅ Connexion réussie! (temps: ${endTime - startTime}ms)`, 'success');
+                addLog(`📊 Status: ${response.status}`, 'success');
+                addLog(`📦 Type de réponse: ${typeof data}`, 'info');
+                addLog(`🔢 Données brutes: ${JSON.stringify(data).substring(0, 200)}...`, 'info');
+                
+            } catch (error) {
+                addLog(`❌ Erreur: ${error.message}`, 'error');
+                console.error('Détails erreur:', error);
+            }
+        }
+        
+        // Récupérer les catégories avec différentes méthodes
+        async function fetchCategories() {
+            const baseUrl = 'http://192.168.1.162:8000/api';
+            const endpoint = '/categorie';
+            const method = corsMethodSelect.value;
+            
+            addLog(`📥 Tentative de récupération des catégories (méthode: ${method})`, 'info');
+            
+            let categories = [];
+            
+            try {
+                // Méthode 1: Proxy CORS
+                if (method === 'proxy') {
+                    const proxyUrl = proxyUrlInput.value.replace(/\/$/, '');
+                    const fullUrl = `${proxyUrl}${baseUrl}${endpoint}`;
+                    
+                    addLog(`🔄 URL via proxy: ${fullUrl}`, 'info');
+                    
+                    const response = await fetch(fullUrl, {
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`Proxy error: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    categories = extractCategories(data);
+                }
+                
+                // Méthode 2: JSONP (si votre API le supporte)
+                else if (method === 'jsonp') {
+                    categories = await fetchWithJsonp(`${baseUrl}${endpoint}`);
+                }
+                
+                // Méthode 3: Direct (pour voir l'erreur CORS)
+                else if (method === 'direct') {
+                    try {
+                        const response = await fetch(`${baseUrl}${endpoint}`);
+                        const data = await response.json();
+                        categories = extractCategories(data);
+                    } catch (corsError) {
+                        addLog(`⚠️ Erreur CORS attendue: ${corsError.message}`, 'warning');
+                        addLog('💡 Solution: Configurez CORS côté serveur Laravel', 'info');
+                        
+                        // Fallback: données de test
+                        categories = getTestCategories();
+                        addLog('📋 Utilisation de données de test', 'info');
+                    }
+                }
+                
+                // Méthode 4: no-cors (limitée)
+                else if (method === 'no-cors') {
+                    addLog('⚠️ Mode no-cors: utilisation de données de test', 'warning');
+                    categories = getTestCategories();
+                }
+                
+                // Afficher les résultats
+                displayCategories(categories);
+                
+                addLog(`✅ ${categories.length} catégories récupérées`, 'success');
+                
+            } catch (error) {
+                addLog(`❌ Erreur: ${error.message}`, 'error');
+                
+                // Fallback sur données de test
+                categories = getTestCategories();
+                displayCategories(categories);
+                addLog('📋 Affichage de données de test', 'info');
+            }
+        }
+        
+        // Méthode JSONP (pour les API qui le supportent)
+        function fetchWithJsonp(url) {
+            return new Promise((resolve, reject) => {
+                const callbackName = 'jsonp_callback_' + Date.now();
+                const script = document.createElement('script');
+                
+                window[callbackName] = function(data) {
+                    delete window[callbackName];
+                    document.body.removeChild(script);
+                    resolve(extractCategories(data));
+                };
+                
+                script.src = `${url}${url.includes('?') ? '&' : '?'}callback=${callbackName}`;
+                script.onerror = reject;
+                
+                document.body.appendChild(script);
+            });
+        }
+        
+        // Extraire les catégories de différentes structures de réponse
+        function extractCategories(data) {
+            console.log('Données brutes à extraire:', data);
+            
+            if (!data) return [];
+            
+            // Cas 1: Données directes dans un tableau
+            if (Array.isArray(data)) {
+                return data.map(item => ({
+                    id: item.id || 0,
+                    nom: item.nom || item.name || 'Sans nom',
+                    icon: item.icon || item.icon_name || 'category',
+                    color: item.color || item.icon_color || '#ffc107',
+                    type: item.type || 1
+                }));
+            }
+            
+            // Cas 2: Données dans une propriété 'data'
+            if (data.data && Array.isArray(data.data)) {
+                return data.data.map(item => ({
+                    id: item.id || 0,
+                    nom: item.nom || item.name || 'Sans nom',
+                    icon: item.icon || item.icon_name || 'category',
+                    color: item.color || item.icon_color || '#ffc107',
+                    type: item.type || 1
+                }));
+            }
+            
+            // Cas 3: Autres structures possibles
+            for (const key in data) {
+                if (Array.isArray(data[key])) {
+                    return data[key].map(item => ({
+                        id: item.id || 0,
+                        nom: item.nom || item.name || 'Sans nom',
+                        icon: item.icon || item.icon_name || 'category',
+                        color: item.color || item.icon_color || '#ffc107',
+                        type: item.type || 1
+                    }));
+                }
+            }
+            
+            return [];
+        }
+        
+        // Données de test pour le développement
+        function getTestCategories() {
+            return [
+                { id: 1, nom: 'Nourriture', icon: 'restaurant', color: '#4CAF50', type: 1 },
+                { id: 2, nom: 'Transport', icon: 'directions_car', color: '#2196F3', type: 1 },
+                { id: 3, nom: 'Logement', icon: 'home', color: '#FF9800', type: 0 },
+                { id: 4, nom: 'Santé', icon: 'local_hospital', color: '#F44336', type: 1 },
+                { id: 5, nom: 'Loisirs', icon: 'sports_esports', color: '#9C27B0', type: 1 },
+                { id: 6, nom: 'Éducation', icon: 'school', color: '#00BCD4', type: 0 }
+            ];
+        }
+        
+        // Afficher les catégories
+        function displayCategories(categories) {
+            categoriesList.innerHTML = categories.map(cat => `
+                <div class="category-item">
+                    <div class="category-icon" style="background-color: ${cat.color}">
+                        <i class="material-icons" style="font-size: 24px; color: white;">${cat.icon}</i>
+                    </div>
+                    <h4>${cat.nom}</h4>
+                    <small>ID: ${cat.id} | ${cat.type === 1 ? 'Personnelle' : 'Système'}</small>
+                </div>
+            `).join('');
+        }
+        
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            addLog('🚀 Application de test CORS initialisée', 'info');
+            addLog('💡 Utilisez "Proxy CORS" pour contourner les restrictions', 'info');
+            addLog('🔧 Configurez CORS dans votre API Laravel pour une solution permanente', 'info');
+        });
+    </script>
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</body>
+</html>

@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire de Dépense</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Flatpickr pour les dates -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        :root {
+            --yellow_color: #ffc107;
+            --primary-hover: #e0a800;
+            --danger-color: #dc3545;
+            --success-color: #198754;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --border-color: #dee2e6;
+            --bg-light: #f8f9fa;
+            --bg-dark: #343a40;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .main-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Carte principale */
+        .expense-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        /* Header de la carte */
+        .expense-header {
+            background: linear-gradient(135deg, var(--yellow_color) 0%, #ffd54f 100%);
+            color: var(--text-primary);
+            padding: 20px 25px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .expense-header h2 {
+            font-weight: 600;
+            font-size: 20px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+            transform: rotate(90deg);
+        }
+
+        /* Corps du formulaire */
+        .expense-body {
+            padding: 25px;
+        }
+
+        /* Grille de formulaire */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Champs de formulaire */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            display: block;
+            font-size: 14px;
+        }
+
+        .form-control, .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s;
+            background-color: white;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--yellow_color);
+            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+            outline: none;
+        }
+
+        .form-control.is-invalid, .form-select.is-invalid {
+            border-color: var(--danger-color);
+        }
+
+        .form-control.is-valid, .form-select.is-valid {
+            border-color: var(--success-color);
+        }
+
+        /* Boutons sélecteurs */
+        .selector-btn {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            background: white;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .selector-btn:hover {
+            border-color: var(--yellow_color);
+            background-color: var(--bg-light);
+        }
+
+        .selector-btn .arrow {
+            transition: transform 0.3s;
+        }
+
+        .selector-btn.open .arrow {
+            transform: rotate(180deg);
+        }
+
+        /* Switch pour dépense répétitive */
+        .recurring-switch {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--bg-light);
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .switch-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .switch-label i {
+            color: var(--yellow_color);
+            font-size: 18px;
+        }
+
+        /* Custom switch */
+        .form-check-input {
+            width: 50px;
+            height: 26px;
+            cursor: pointer;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--yellow_color);
+            border-color: var(--yellow_color);
+        }
+
+        /* Section dates (conditionnelle) */
+        .dates-section {
+            background-color: var(--bg-light);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .dates-section.show {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Bouton image */
+        .image-btn {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px dashed var(--border-color);
+            border-radius: 10px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        .image-btn:hover {
+            border-color: var(--yellow_color);
+            background-color: var(--bg-light);
+        }
+
+        /* Aperçu image */
+        .image-preview {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .image-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 10px;
+            border: 2px solid var(--border-color);
+            object-fit: cover;
+        }
+
+        /* Boutons d'action */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn-cancel {
+            flex: 1;
+            padding: 14px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            background: white;
+            color: var(--text-secondary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-cancel:hover {
+            background-color: var(--bg-light);
+            border-color: var(--text-secondary);
+        }
+
+        .btn-submit {
+            flex: 2;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: var(--yellow_color);
+            color: var(--text-primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            max-height: 80vh;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-light);
+        }
+
+        .modal-body {
+            padding: 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .modal-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .modal-item:hover {
+            background-color: var(--bg-light);
+        }
+
+        .modal-item.selected {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid var(--yellow_color);
+        }
+
+        .modal-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .modal-text {
+            font-size: 14px;
+            color: var(--text-primary);
+            flex: 1;
+        }
+
+        /* Spinner */
+        .spinner-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            display: none;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--yellow_color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .spinner-text {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        /* Toast notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            min-width: 300px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .expense-body {
+                padding: 20px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .modal-content {
+                width: 95%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            body {
+                padding: 10px;
+            }
+            
+            .expense-header {
+                padding: 15px 20px;
+            }
+            
+            .expense-header h2 {
+                font-size: 18px;
+            }
+        }
+
+        /* Animation pour les nouveaux éléments */
+        .highlight {
+            animation: highlight 1.5s ease;
+        }
+
+        @keyframes highlight {
+            0% { background-color: rgba(255, 193, 7, 0.2); }
+            100% { background-color: white; }
+        }
+
+        /* Messages de validation */
+        .invalid-feedback {
+            display: none;
+            width: 100%;
+            margin-top: 5px;
+            font-size: 12px;
+            color: var(--danger-color);
+        }
+
+        .was-validated .form-control:invalid ~ .invalid-feedback,
+        .form-control.is-invalid ~ .invalid-feedback {
+            display: block;
+        }
+
+        .valid-feedback {
+            display: none;
+            width: 100%;
+            margin-top: 5px;
+            font-size: 12px;
+            color: var(--success-color);
+        }
+
+        .was-validated .form-control:valid ~ .valid-feedback,
+        .form-control.is-valid ~ .valid-feedback {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="expense-card">
+            <!-- Header -->
+            <div class="expense-header">
+                <h2>
+                    <i class="bi bi-plus-circle"></i>
+                    <span id="formTitle">Ajouter une Dépense</span>
+                </h2>
+                <button class="close-btn" id="closeBtn">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="expense-body">
+                <form id="expenseForm">
+                    <!-- Montant et Libellé -->
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Montant *</label>
+                            <div class="input-group">
+                                <!-- <span class="input-group-text">€</span> -->
+                                <input type="number" 
+                                       id="amount" 
+                                       class="form-control" 
+                                       placeholder="0.00"
+                                       step="0.01"
+                                       min="0"
+                                       required>
+                            </div>
+                            <div class="invalid-feedback" id="amountError">
+                                Veuillez saisir un montant valide.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Libellé *</label>
+                            <input type="text" 
+                                   id="label" 
+                                   class="form-control" 
+                                   placeholder="Description de la dépense"
+                                   maxlength="100"
+                                   required>
+                            <div class="invalid-feedback" id="labelError">
+                                Veuillez saisir un libellé.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Budget -->
+                    <div class="form-group">
+                        <label class="form-label">Budget</label>
+                        <button type="button" 
+                                class="selector-btn" 
+                                id="budgetSelector"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#budgetModal">
+                            <span id="selectedBudget">Sélectionner un budget</span>
+                            <i class="bi bi-chevron-down arrow"></i>
+                        </button>
+                    </div>
+
+                    <!-- Catégorie -->
+                    <div class="form-group">
+                        <label class="form-label">Catégorie *</label>
+                        <button type="button" 
+                                class="selector-btn" 
+                                id="categorySelector"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#categoryModal">
+                            <span id="selectedCategory">Sélectionner une catégorie</span>
+                            <i class="bi bi-chevron-down arrow"></i>
+                        </button>
+                    </div>
+
+                    <!-- Dépense répétitive -->
+                    <div class="recurring-switch">
+                        <div class="switch-label">
+                            <i class="bi bi-arrow-repeat"></i>
+                            <span>Dépense répétitive</span>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" 
+                                   type="checkbox" 
+                                   id="recurringSwitch">
+                        </div>
+                    </div>
+
+                    <!-- Dates (conditionnel) -->
+                    <div class="dates-section" id="datesSection">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Date de début</label>
+                                <input type="text" 
+                                       id="startDate" 
+                                       class="form-control datepicker"
+                                       placeholder="JJ/MM/AAAA"
+                                       readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Date de fin</label>
+                                <input type="text" 
+                                       id="endDate" 
+                                       class="form-control datepicker"
+                                       placeholder="JJ/MM/AAAA"
+                                       readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Image -->
+                    <button type="button" class="image-btn" id="imageBtn">
+                        <i class="bi bi-camera"></i>
+                        <span id="imageText">Ajouter une pièce jointe</span>
+                    </button>
+                    <input type="file" 
+                           id="imageInput" 
+                           accept="image/*" 
+                           style="display: none;">
+                    
+                    <div class="image-preview" id="imagePreview"></div>
+
+                    <!-- Boutons d'action -->
+                    <div class="action-buttons">
+                        <button type="button" class="btn-cancel" id="cancelBtn">
+                            <i class="bi bi-x-circle"></i> Annuler
+                        </button>
+                        <button type="submit" class="btn-submit" id="submitBtn">
+                            <i class="bi bi-check-circle"></i> Ajouter la dépense
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Spinner -->
+    <div class="spinner-overlay" id="spinnerOverlay">
+        <div class="spinner"></div>
+        <div class="spinner-text" id="spinnerText">Chargement...</div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Modal pour les budgets -->
+    <div class="modal-overlay" id="budgetModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mb-0">
+                    <i class="bi bi-wallet2 me-2"></i>
+                    Sélectionner un budget
+                </h5>
+            </div>
+            <div class="modal-body" id="budgetList">
+                <!-- Les budgets seront chargés ici dynamiquement -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal pour les catégories -->
+    <div class="modal-overlay" id="categoryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mb-0">
+                    <i class="bi bi-tags me-2"></i>
+                    Sélectionner une catégorie
+                </h5>
+            </div>
+            <div class="modal-body" id="categoryList">
+                <!-- Les catégories seront chargées ici dynamiquement -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Flatpickr pour les dates -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
+    <script src="expense-form.js"></script>
+</body>
+</html>
