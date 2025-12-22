@@ -13,6 +13,15 @@ class CategoriesManager {
         this.categories = [];
         this.currentEditId = null;
         this.currentDeleteId = null;
+
+         // Catégories système (type = 0)
+        this.systemCategories = [
+            { id: -1, name: "Alimentation", type: 0 },
+            { id: -2, name: "Transport", type: 0 },
+            { id: -3, name: "Logement", type: 0 },
+            { id: -4, name: "Santé", type: 0 },
+            { id: -5, name: "Éducation", type: 0 }
+        ];
         
         this.init();
     }
@@ -25,7 +34,7 @@ class CategoriesManager {
     async init() {
         this.setupEventListeners();
         await this.loadCategories(); // Charger les catégories au démarrage
-        this.updateCount();
+        //this.updateCount();
         
         // Focus sur l'input au chargement
         setTimeout(() => {
@@ -108,16 +117,16 @@ class CategoriesManager {
     }
 
     // Met à jour le compteur de catégories
-    updateCount() {
-        const countElement = document.getElementById('categoryCount');
-        countElement.textContent = this.categories.length;
+    // updateCount() {
+    //     const countElement = document.getElementById('categoryCount');
+    //     countElement.textContent = this.categories.length;
         
-        // Animation du badge
-        countElement.style.transform = 'scale(1.2)';
-        setTimeout(() => {
-            countElement.style.transform = 'scale(1)';
-        }, 300);
-    }
+    //     // Animation du badge
+    //     countElement.style.transform = 'scale(1.2)';
+    //     setTimeout(() => {
+    //         countElement.style.transform = 'scale(1)';
+    //     }, 300);
+    // }
 
     // Affiche une notification toast
     showToast(message, type = 'info') {
@@ -180,11 +189,42 @@ class CategoriesManager {
     }
 
     // Rend la liste des catégories
+    // renderCategories() {
+    //     const listContainer = document.getElementById('categoriesList');
+    //     const emptyState = document.getElementById('emptyState');
+        
+    //     if (this.categories.length === 0) {
+    //         listContainer.innerHTML = '';
+    //         emptyState.style.display = 'block';
+    //         return;
+    //     }
+        
+    //     emptyState.style.display = 'none';
+        
+    //     listContainer.innerHTML = this.categories.map(category => `
+    //         <li class="category-item" data-id="${category.id}">
+    //             <div class="category-name">${category.name}</div>
+    //             <div class="category-actions">
+    //                 <button class="btn-action btn-edit" onclick="categoriesManager.editCategory(${category.id})">
+    //                     <i class="bi bi-pencil"></i>
+    //                 </button>
+    //                 <button class="btn-action btn-delete" onclick="categoriesManager.confirmDelete(${category.id})">
+    //                     <i class="bi bi-trash"></i>
+    //                 </button>
+    //             </div>
+    //         </li>
+    //     `).join('');
+    // }
+
+     // MODIFIÉ : Affichage avec distinction système/utilisateur
     renderCategories() {
         const listContainer = document.getElementById('categoriesList');
         const emptyState = document.getElementById('emptyState');
         
-        if (this.categories.length === 0) {
+        // Fusionner catégories système et utilisateur
+        const allCategories = [...this.systemCategories, ...this.categories];
+        
+        if (allCategories.length === 0) {
             listContainer.innerHTML = '';
             emptyState.style.display = 'block';
             return;
@@ -192,21 +232,44 @@ class CategoriesManager {
         
         emptyState.style.display = 'none';
         
-        listContainer.innerHTML = this.categories.map(category => `
-            <li class="category-item" data-id="${category.id}">
-                <div class="category-name">${category.name}</div>
-                <div class="category-actions">
-                    <button class="btn-action btn-edit" onclick="categoriesManager.editCategory(${category.id})">
-                        <i class="bi bi-pencil"></i>
-                    </button>
-                    <button class="btn-action btn-delete" onclick="categoriesManager.confirmDelete(${category.id})">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </div>
-            </li>
-        `).join('');
+        listContainer.innerHTML = allCategories.map(category => {
+            const isSystemCategory = category.type === 0;
+            
+            return `
+                <li class="category-item ${isSystemCategory ? 'system-category' : ''}" 
+                    data-id="${category.id}" 
+                    data-type="${isSystemCategory ? 'system' : 'user'}">
+                    
+                    <div style="flex: 1;">
+                        <div class="category-name">
+                            ${category.name}
+                        </div>
+                        ${isSystemCategory ? `
+                            <div class="system-lock">
+                                <i class="bi bi-lock"></i>
+                                Catégorie système
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="category-actions">
+                        ${!isSystemCategory ? `
+                            <button class="btn-action btn-edit" onclick="categoriesManager.editCategory(${category.id})">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn-action btn-delete" onclick="categoriesManager.confirmDelete(${category.id})">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        ` : `
+                            <div style="opacity: 0.5; padding: 8px 12px;">
+                                <i class="bi bi-lock" style="font-size: 16px;"></i>
+                            </div>
+                        `}
+                    </div>
+                </li>
+            `;
+        }).join('');
     }
-
     /**
      * ============================================
      * VALIDATION DES FORMULAIRES
@@ -282,6 +345,173 @@ class CategoriesManager {
         return true;
     }
 
+    // MODIFIÉ : Validation qui inclut les catégories système top1
+    // validateInput(input) {
+    //     const value = input.value.trim();
+        
+    //     if (!value) {
+    //         input.classList.remove('is-valid');
+    //         input.classList.add('is-invalid');
+    //         document.getElementById('NameError').textContent = 'Le nom est requis.';
+    //         return false;
+    //     }
+
+    //     if (value.length < 2) {
+    //         input.classList.remove('is-valid');
+    //         input.classList.add('is-invalid');
+    //         document.getElementById('NameError').textContent = 'Le nom doit contenir au moins 2 caractères.';
+    //         return false;
+    //     }
+
+    //     // Vérifier doublons dans système ET utilisateur
+    //     const allCategories = [...this.systemCategories, ...this.categories];
+    //     const duplicate = allCategories.find(cat => 
+    //         cat.name.toLowerCase() === value.toLowerCase()
+    //     );
+
+    //     if (duplicate) {
+    //         input.classList.remove('is-valid');
+    //         input.classList.add('is-invalid');
+    //         document.getElementById('NameError').textContent = 'Ce nom existe déjà.';
+    //         return false;
+    //     }
+
+    //     input.classList.remove('is-invalid');
+    //     input.classList.add('is-valid');
+    //     return true;
+    // }
+
+
+    // MODIFIÉ : Validation d'édition top1
+    // validateEditInput(input) {
+    //     const value = input.value.trim();
+        
+    //     if (!value) {
+    //         input.classList.remove('is-valid');
+    //         input.classList.add('is-invalid');
+    //         document.getElementById('editNameError').textContent = 'Le nom est requis.';
+    //         return false;
+    //     }
+
+    //     if (value.length < 2) {
+    //         input.classList.remove('is-valid');
+    //         input.classList.add('is-invalid');
+    //         document.getElementById('editNameError').textContent = 'Le nom doit contenir au moins 2 caractères.';
+    //         return false;
+    //     }
+
+    //     // Vérifier doublons (système + utilisateur sauf celle en cours)
+    //     const allCategories = [...this.systemCategories, ...this.categories];
+    //     const duplicate = allCategories.find(cat => 
+    //         cat.name.toLowerCase() === value.toLowerCase() && 
+    //         cat.id !== this.currentEditId
+    //     );
+
+    //     if (duplicate) {
+    //         input.classList.remove('is-valid');
+    //         input.classList.add('is-invalid');
+    //         document.getElementById('editNameError').textContent = 'Ce nom existe déjà.';
+    //         return false;
+    //     }
+
+    //     input.classList.remove('is-invalid');
+    //     input.classList.add('is-valid');
+    //     return true;
+    // }
+
+    // MODIFIÉ : Suppression uniquement pour catégories utilisateur
+    // confirmDelete(id) {
+    //     // Si l'ID est négatif, c'est une catégorie système
+    //     if (id < 0) {
+    //         this.showToast('Les catégories système ne peuvent pas être supprimées', 'warning');
+    //         return;
+    //     }
+
+    //     const category = this.categories.find(c => c.id === id);
+    //     if (!category) return;
+
+    //     this.currentDeleteId = id;
+    //     document.getElementById('deleteMessage').textContent = 
+    //         `Êtes-vous sûr de vouloir supprimer la catégorie "${category.name}" ?`;
+        
+    //     const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    //     modal.show();
+    // }
+
+    // MODIFIÉ : Chargement des catégories
+    // async loadCategories() {
+    //     try {
+    //         this.showSpinner('Chargement des catégories...');
+            
+    //         await new Promise(resolve => setTimeout(resolve, 800));
+            
+    //         // Catégories utilisateur (type = 1)
+    //         const saved = localStorage.getItem('categories');
+    //         this.categories = saved ? JSON.parse(saved) : [
+    //             { id: 1, name: "Restaurant", type: 1 },
+    //             { id: 2, name: "Cinéma", type: 1 },
+    //             { id: 3, name: "Shopping", type: 1 }
+    //         ];
+            
+    //         this.renderCategories();
+            
+    //     } catch (error) {
+    //         console.error('Erreur lors du chargement:', error);
+    //         this.showToast('Erreur lors du chargement des catégories', 'error');
+    //     } finally {
+    //         this.hideSpinner();
+    //     }
+    // }
+
+    // MODIFIÉ : Ajout d'une catégorie utilisateur
+    // async addCategory() {
+    //     const input = document.getElementById('categoryName');
+    //     const name = input.value.trim();
+
+    //     if (!this.validateInput(input)) {
+    //         this.showToast('Veuillez saisir un nom valide', 'error');
+    //         input.focus();
+    //         return;
+    //     }
+
+    //     try {
+    //         this.showSpinner('Ajout de la catégorie...');
+            
+    //         await new Promise(resolve => setTimeout(resolve, 800));
+            
+    //         // Type 1 = catégorie utilisateur
+    //         const newCategory = {
+    //             id: this.categories.length > 0 
+    //                 ? Math.max(...this.categories.map(c => c.id)) + 1 
+    //                 : 1,
+    //             name: name,
+    //             type: 1
+    //         };
+            
+    //         this.categories.unshift(newCategory);
+    //         localStorage.setItem('categories', JSON.stringify(this.categories));
+            
+    //         input.value = '';
+    //         input.classList.remove('is-valid');
+    //         input.focus();
+            
+    //         this.renderCategories();
+            
+    //         const newItem = document.querySelector(`[data-id="${newCategory.id}"]`);
+    //         if (newItem) {
+    //             newItem.classList.add('new-item');
+    //         }
+            
+    //         this.showToast(`Catégorie "${name}" ajoutée avec succès`, 'success');
+            
+    //     } catch (error) {
+    //         console.error('Erreur lors de l\'ajout:', error);
+    //         this.showToast('Erreur lors de l\'ajout de la catégorie', 'error');
+    //     } finally {
+    //         this.hideSpinner();
+    //     }
+    // }
+
     /**
      * ============================================
      * FONCTIONS CRUD AVEC SIMULATION API
@@ -324,7 +554,7 @@ class CategoriesManager {
             // ============================================
             
             this.renderCategories();
-            this.updateCount();
+            //this.updateCount();
             
         } catch (error) {
             console.error('Erreur lors du chargement:', error);
@@ -392,7 +622,7 @@ class CategoriesManager {
             
             // Mettre à jour l'affichage
             this.renderCategories();
-            this.updateCount();
+            // this.updateCount();
             
             // Animation de la nouvelle catégorie
             const newItem = document.querySelector(`[data-id="${newCategory.id}"]`);
@@ -572,7 +802,7 @@ class CategoriesManager {
             
             // Mettre à jour l'affichage
             this.renderCategories();
-            this.updateCount();
+            //this.updateCount();
             
             this.showToast(`Catégorie "${categoryName}" supprimée avec succès`, 'success');
             

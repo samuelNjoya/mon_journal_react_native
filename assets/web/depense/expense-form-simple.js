@@ -148,7 +148,7 @@ class ExpenseForm {
     setupEventListeners() {
         // Fermeture du formulaire
         document.getElementById('closeBtn').addEventListener('click', () => this.closeForm());
-        document.getElementById('cancelBtn').addEventListener('click', () => this.closeForm());
+       // document.getElementById('cancelBtn').addEventListener('click', () => this.closeForm());
         
         // Soumission du formulaire
         document.getElementById('expenseForm').addEventListener('submit', (e) => {
@@ -177,9 +177,20 @@ class ExpenseForm {
             this.handleImageSelect(e.target.files[0]);
         });
         
-        document.getElementById('clearImageBtn').addEventListener('click', () => {
-            this.clearImage();
+        // document.getElementById('clearImageBtn').addEventListener('click', () => {
+        //     this.clearImage();
+        // });
+
+          // Sélection d'image
+        document.getElementById('imageBtn').addEventListener('click', () => {
+            document.getElementById('imageInput').click();
         });
+        
+        // document.getElementById('imageInput').addEventListener('change', (e) => {
+        //     this.handleImageSelect(e.target.files[0]);
+        // });
+        
+      
         
         // Validation en temps réel
         document.getElementById('amount').addEventListener('input', (e) => this.validateAmount(e.target));
@@ -446,14 +457,22 @@ class ExpenseForm {
     updateUI() {
         const formTitle = document.getElementById('formTitle');
         const submitBtn = document.getElementById('submitBtn');
+         const imageText = document.getElementById('imageText');
         
         if (this.state.isEditing) {
             formTitle.textContent = 'Modifier la Dépense';
             submitBtn.innerHTML = '<i class="bi bi-check-circle"></i> Modifier la dépense';
         } else {
             formTitle.textContent = 'Ajouter une Dépense';
-            submitBtn.innerHTML = '<i class="bi bi-check-circle"></i> Ajouter la dépense';
+            submitBtn.innerHTML = 'Ajouter';
         }
+
+         // Image <i class="bi bi-check-circle"></i>
+        // if (this.state.image) {
+        //     imageText.textContent = 'Image sélectionnée';
+        // } else {
+        //     imageText.textContent = 'Ajouter une pièce jointe';
+        // }
         
         // Mettre à jour les valeurs des champs
         document.getElementById('amount').value = this.state.amount || '';

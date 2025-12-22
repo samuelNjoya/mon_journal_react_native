@@ -25,6 +25,7 @@
             --bg-item: #f8f9fa;
             --blue-color: #0d6efd;
             --green-color: #198754;
+            --red-color: #dc3545;
         }
 
         body {
@@ -48,7 +49,7 @@
             margin-bottom: 30px;
         }
 
-        /* Header sans accordéon */
+        /* Header */
         .card-header {
             background: var(--bg-light);
             color: var(--text-primary);
@@ -73,14 +74,14 @@
         /* Barre de recherche et filtres */
         .search-filter-bar {
             display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+            /* flex-wrap: wrap; */
         }
 
         .search-box {
             flex: 1;
-            min-width: 250px;
+            min-width: 200px;
             position: relative;
         }
 
@@ -135,7 +136,7 @@
             background-color: rgba(255, 193, 7, 0.1);
         }
 
-        /* Panneau de filtres - RESPONSIVE AMÉLIORÉ */
+        /* Panneau de filtres - NOUVEAU STYLE RESPONSIVE */
         .filters-panel {
             background: var(--bg-light);
             border-radius: 10px;
@@ -164,9 +165,9 @@
         /* Grille de filtres responsive */
         .filters-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         @media (max-width: 768px) {
@@ -177,7 +178,7 @@
         }
 
         .filter-group {
-            margin-bottom: 15px;
+            margin-bottom: 8px;
         }
 
         .filter-label {
@@ -188,7 +189,7 @@
             font-size: 14px;
         }
 
-        .filter-input, .filter-select {
+        .filter-select {
             width: 100%;
             padding: 10px 15px;
             border: 2px solid var(--border-color);
@@ -196,9 +197,11 @@
             font-family: 'Poppins', sans-serif;
             font-size: 14px;
             transition: all 0.3s;
+            background: white;
+            cursor: pointer;
         }
 
-        .filter-input:focus, .filter-select:focus {
+        .filter-select:focus {
             border-color: var(--yellow_color);
             box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
             outline: none;
@@ -225,9 +228,10 @@
         .date-separator {
             color: var(--text-secondary);
             font-weight: 500;
+            white-space: nowrap;
         }
 
-        /* Slider de montant */
+        /* NOUVEAU : Double range slider pour montant */
         .amount-slider-container {
             padding: 10px 0;
         }
@@ -249,6 +253,7 @@
             gap: 10px;
             align-items: center;
             flex-wrap: wrap;
+            margin-top: 15px;
         }
 
         @media (max-width: 576px) {
@@ -261,80 +266,62 @@
             }
         }
 
-        .amount-range-container {
-            flex: 1;
-            min-width: 200px;
+        /* Style pour le slider double */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 20px;
+            margin: 20px 0;
         }
 
-        input[type="range"] {
+        .slider-track {
+            position: absolute;
             width: 100%;
             height: 6px;
-            -webkit-appearance: none;
             background: var(--border-color);
             border-radius: 3px;
-            outline: none;
-            margin: 10px 0;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
+        .slider-range {
+            position: absolute;
+            height: 6px;
+            background: var(--yellow_color);
+            border-radius: 3px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .slider-thumb {
+            position: absolute;
             width: 20px;
             height: 20px;
-            background: var(--yellow_color);
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        /* Boutons de filtres */
-        .filter-actions {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-            border-top: 1px solid var(--border-color);
-            padding-top: 20px;
-        }
-
-        @media (max-width: 576px) {
-            .filter-actions {
-                flex-direction: column;
-            }
-            
-            .filter-actions button {
-                width: 100%;
-            }
-        }
-
-        .btn-clear {
-            padding: 10px 20px;
             background: white;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-secondary);
-            font-weight: 500;
+            border: 2px solid var(--yellow_color);
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
             cursor: pointer;
-            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 2;
         }
 
-        .btn-clear:hover {
-            background-color: var(--bg-light);
-            border-color: var(--text-secondary);
-        }
-
-        .btn-apply {
-            padding: 10px 20px;
-            background: var(--yellow_color);
-            border: none;
-            border-radius: 8px;
+        .slider-value {
+            position: absolute;
+            top: -25px;
+            font-size: 12px;
             color: var(--text-primary);
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
+            background: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            border: 1px solid var(--border-color);
+            white-space: nowrap;
         }
 
-        .btn-apply:hover {
-            background: var(--primary-hover);
+        /* Boutons de filtres (supprimés mais gardés pour structure) */
+        .filter-actions {
+            display: none;
         }
 
         /* Tags de filtres actifs */
@@ -373,135 +360,153 @@
             font-size: 14px;
         }
 
-        /* Tableau des dépenses */
-        .expense-table-container {
-            overflow-x: auto;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-            background: white;
-            margin-bottom: 20px;
+        /* CONTENEUR DE LISTE (comme React Native) */
+        .expense-list-container {
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .expense-list-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .expense-list-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .expense-list-container::-webkit-scrollbar-thumb {
+            background: var(--yellow_color);
+            border-radius: 4px;
+        }
+
+        /* ITEM DE DÉPENSE (style comme React Native) */
+        .expense-item {
+            background: var(--bg-item);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--yellow_color);
+            transition: all 0.3s ease;
+            cursor: pointer;
             position: relative;
         }
 
-        .expense-table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 1000px;
+        .expense-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
-        @media (max-width: 768px) {
-            .expense-table {
-                min-width: 800px;
-            }
+        .expense-item.recurring {
+            border-left-color: var(--green-color);
         }
 
-        .expense-table thead {
-            background: var(--bg-light);
-        }
-
-        .expense-table th {
-            padding: 15px;
-            text-align: left;
-            font-weight: 600;
-            color: var(--text-primary);
-            border-bottom: 2px solid var(--border-color);
-            font-size: 14px;
-            white-space: nowrap;
-        }
-
-        .expense-table td {
-            padding: 15px;
-            border-bottom: 1px solid var(--border-color);
-            vertical-align: middle;
-            font-size: 14px;
-        }
-
-        .expense-table tbody tr {
-            transition: background-color 0.2s;
-        }
-
-        .expense-table tbody tr:hover {
-            background-color: var(--bg-light);
-        }
-
-        /* Ligne de dépense récurrente */
-        .recurring-row {
-            border-left: 4px solid var(--yellow_color);
-        }
-
-        /* Cellules de la table */
-        .category-cell {
+        .expense-item-content {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 10px;
         }
 
-        .expense-label {
-            font-weight: 500;
-            color: var(--text-primary);
-            margin-bottom: 2px;
+        .expense-info {
+            flex: 1;
+            min-width: 0;
         }
 
-        .expense-details {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        .amount-cell {
-            font-weight: 600;
-            color: var(--danger-color);
-            white-space: nowrap;
-        }
-
-        .actions-cell {
+        .expense-header {
             display: flex;
-            gap: 8px;
-            flex-wrap: nowrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 4px;
+            /* flex-wrap: wrap; */
+            gap: 10px;
         }
 
         @media (max-width: 576px) {
-            .actions-cell {
-                flex-wrap: wrap;
-                justify-content: center;
+            /* .expense-header {
+                flex-direction: column;
+                align-items: stretch;
+            } */
+        }
+
+        .expense-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 13px;
+            margin: 0;
+            word-break: break-word;
+        }
+
+        .expense-amount {
+            font-weight: 700;
+            color: var(--red-color);
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .expense-details-actions {
+             display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            /* align-items: center; */
+        }
+
+        .expense-details {
+            color: var(--text-secondary);
+            font-size: 13px;
+            /* margin-bottom: 5px; */
+            display: flex;
+            /* flex-wrap: wrap; */
+            gap: 10px;
+            align-items: center;
+        }
+
+        .expense-actions {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            justify-content: flex-end;
+            /* margin-top: 10px; */
+            /* flex-wrap: wrap; */
+        }
+
+        @media (max-width: 576px) {
+            .expense-actions {
+                justify-content: flex-start;
             }
         }
 
-        .action-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 6px;
+        .expense-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             border: none;
             cursor: pointer;
             transition: all 0.2s;
-            font-size: 16px;
+            font-size: 14px;
+            background: transparent;
         }
 
-        .action-btn:hover {
+        .expense-btn:hover {
             transform: scale(1.1);
         }
 
-        .btn-view {
-            background: rgba(13, 110, 253, 0.1);
-            color: var(--blue-color);
+        .btn-stop {
+            background: rgba(25, 135, 84, 0.1) !important;
+            color: var(--green-color) !important;
         }
 
         .btn-duplicate {
-            background: rgba(108, 117, 125, 0.1);
-            color: var(--text-secondary);
-           
-        }
-
-        .btn-stop {
-            background: rgba(25, 135, 84, 0.1);
-            color: var(--green-color);
+            background: rgba(108, 117, 125, 0.1) !important;
+            color: var(--text-secondary) !important;
         }
 
         .btn-delete {
-            background: rgba(220, 53, 69, 0.1);
-            color: var(--danger-color);
+            background: rgba(220, 53, 69, 0.1) !important;
+            color: var(--danger-color) !important;
         }
 
         /* Badge récurrent */
@@ -517,41 +522,69 @@
             gap: 4px;
         }
 
-        /* État vide */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
+        .recurring-badge.active {
+            background: rgba(25, 135, 84, 0.1);
+            color: var(--green-color);
+        }
+
+        .recurring-badge.inactive {
+            background: rgba(108, 117, 125, 0.1);
             color: var(--text-secondary);
         }
 
-        .empty-state i {
-            font-size: 64px;
-            color: #dee2e6;
-            margin-bottom: 20px;
-            opacity: 0.7;
+        /* Pagination selector */
+        .pagination-selector-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .empty-state h4 {
-            font-weight: 600;
+        @media (max-width: 768px) {
+            /* .pagination-selector-container {
+                flex-direction: column;
+                align-items: stretch;
+            } */
+        }
+
+        .selector-info {
+            font-size: 14px;
             color: var(--text-secondary);
-            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .empty-state p {
-            font-style: italic;
-            font-size: 15px;
-            opacity: 0.8;
-            margin-bottom: 20px;
+        .items-per-page-select {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+        }
+
+        .items-per-page-select select {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            min-width: 70px;
+            cursor: pointer;
         }
 
         /* PAGINATION RESPONSIVE AMÉLIORÉE */
         .pagination-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
-            justify-content: space-between;
+            gap: 10px;
+            justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 15px;
             background: white;
             border-top: 1px solid var(--border-color);
             border-radius: 0 0 10px 10px;
@@ -561,7 +594,6 @@
             .pagination-container {
                 flex-direction: column;
                 gap: 15px;
-                align-items: stretch;
             }
             
             .pagination-info {
@@ -575,11 +607,6 @@
                 justify-content: center;
                 flex-wrap: wrap;
                 gap: 8px;
-            }
-            
-            .items-per-page {
-                order: 2;
-                justify-content: center;
             }
         }
 
@@ -639,24 +666,52 @@
             cursor: not-allowed;
         }
 
-        .items-per-page {
-            display: flex;
+        /* État vide */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            color: #dee2e6;
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+
+        .empty-state h4 {
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .empty-state p {
+            font-style: italic;
+            font-size: 15px;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .clear-filters-btn {
+            padding: 8px 20px;
+            background: var(--yellow_color);
+            border: none;
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
             align-items: center;
-            gap: 10px;
-            white-space: nowrap;
+            gap: 8px;
         }
 
-        .items-per-page select {
-            padding: 8px 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background: white;
-            font-family: 'Poppins', sans-serif;
-            font-size: 14px;
-            min-width: 70px;
+        .clear-filters-btn:hover {
+            background: var(--primary-hover);
         }
 
-        /* Spinner */
+        /* Spinner global */
         .spinner-overlay {
             position: fixed;
             top: 0;
@@ -719,7 +774,7 @@
             }
         }
 
-        /* Modal de confirmation AJAX */
+        /* Modal AJAX pour les confirmations */
         .ajax-modal-overlay {
             position: fixed;
             top: 0;
@@ -876,7 +931,7 @@
             color: white;
         }
 
-        /* Modal des détails */
+        /* Modal des détails (correspond à React Native) */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -927,25 +982,119 @@
             cursor: pointer;
         }
 
-        .expense-detail-item {
-            margin-bottom: 15px;
-            padding-bottom: 15px;
+        /* Détails de la dépense - style React Native */
+        .detail-section {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
             border-bottom: 1px solid var(--border-color);
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .detail-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .detail-content {
+            flex: 1;
         }
 
         .detail-label {
             font-weight: 600;
             color: var(--text-primary);
-            margin-bottom: 5px;
-            font-size: 14px;
+            font-size: 13px;
+            margin-bottom: 3px;
+            display: block;
         }
 
         .detail-value {
             color: var(--text-secondary);
             font-size: 14px;
+            line-height: 1.4;
         }
 
-        /* Loading overlay */
+        .amount-value {
+            color: var(--red-color);
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .cycle-status {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .cycle-status.active {
+            background: rgba(25, 135, 84, 0.1);
+            color: var(--green-color);
+        }
+
+        .cycle-status.inactive {
+            background: rgba(220, 53, 69, 0.1);
+            color: var(--danger-color);
+        }
+
+        .detail-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .detail-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid var(--border-color);
+            background: white;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .detail-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline-warning {
+            border-color: var(--yellow_color);
+            color: var(--text-primary);
+        }
+
+        .btn-outline-warning:hover {
+            background: rgba(255, 193, 7, 0.1);
+        }
+
+        .btn-outline-danger {
+            border-color: var(--danger-color);
+            color: var(--danger-color);
+        }
+
+        .btn-outline-danger:hover {
+            background: rgba(220, 53, 69, 0.1);
+        }
+
+        /* Loading overlay pour la liste */
         .loading-overlay {
             position: absolute;
             top: 0;
@@ -958,6 +1107,7 @@
             align-items: center;
             z-index: 100;
             border-radius: 10px;
+            display: none;
         }
 
         /* Responsive Design général */
@@ -974,39 +1124,42 @@
                 padding: 15px;
             }
             
-            .search-filter-bar {
+            /* .search-filter-bar {
                 flex-direction: column;
-            }
+            } */
             
-            .search-box {
+            /* .search-box {
                 min-width: 100%;
-            }
-            
+            } */
+/*             
             .filter-btn {
                 width: 100%;
                 justify-content: center;
-            }
+            } */
             
-            .ajax-modal-actions {
+            /* .ajax-modal-actions {
                 flex-direction: column;
-            }
+            } */
             
-            .ajax-modal-btn {
+            /* .ajax-modal-btn {
                 width: 100%;
+            } */
+            
+            /* .detail-actions {
+                flex-direction: column;
+            } */
+            
+            .detail-btn {
+                width: 100%;
+                justify-content: center;
             }
         }
 
         @media (max-width: 576px) {
-            .action-btn {
+            .expense-btn {
                 width: 32px;
                 height: 32px;
                 font-size: 14px;
-            }
-            
-            .expense-table th,
-            .expense-table td {
-                padding: 10px;
-                font-size: 13px;
             }
             
             .ajax-modal-content {
@@ -1016,6 +1169,10 @@
             .ajax-modal-body {
                 padding: 20px 15px;
             }
+            
+            .modal-content {
+                width: 95%;
+            }
         }
     </style>
 </head>
@@ -1023,12 +1180,12 @@
     <div class="main-container">
         <!-- Carte principale -->
         <div class="expense-card">
-            <!-- Header sans accordéon -->
+            <!-- Header -->
             <div class="card-header">
                 <h2>
                     <!-- <i class="bi bi-clock-history"></i> -->
                     Historique des Dépenses
-                    <span class="badge bg-warning ms-2" id="expenseCount">0</span>
+                    <!-- <span class="badge bg-warning ms-2" id="expenseCount">0</span> -->
                 </h2>
             </div>
 
@@ -1057,9 +1214,9 @@
                         <div class="filter-group">
                             <label class="filter-label">Période</label>
                             <div class="date-group">
-                                <input type="date" id="startDate" class="filter-input">
+                                <input type="date" id="startDate" class="form-control filter-input">
                                 <span class="date-separator">au</span>
-                                <input type="date" id="endDate" class="filter-input">
+                                <input type="date" id="endDate" class="form-control filter-input">
                             </div>
                         </div>
 
@@ -1068,7 +1225,6 @@
                             <label class="filter-label">Budget</label>
                             <select id="budgetFilter" class="filter-select">
                                 <option value="0">Tous les budgets</option>
-                                <!-- Les budgets seront chargés ici dynamiquement -->
                             </select>
                         </div>
 
@@ -1077,11 +1233,10 @@
                             <label class="filter-label">Catégorie</label>
                             <select id="categoryFilter" class="filter-select">
                                 <option value="0">Toutes les catégories</option>
-                                <!-- Les catégories seront chargées ici dynamiquement -->
                             </select>
                         </div>
 
-                        <!-- Montant -->
+                        <!-- Montant - NOUVEAU DOUBLE SLIDER -->
                         <div class="filter-group">
                             <label class="filter-label">Plage de montant (FCFA)</label>
                             <div class="amount-slider-container">
@@ -1089,25 +1244,32 @@
                                     <span class="amount-label" id="minAmountLabel">0 FCFA</span>
                                     <span class="amount-label" id="maxAmountLabel">1,000,000 FCFA</span>
                                 </div>
+                                
+                                <!-- Conteneur pour le double slider -->
+                                <div class="slider-container" id="amountSliderContainer">
+                                    <div class="slider-track"></div>
+                                    <div class="slider-range" id="sliderRange"></div>
+                                    <div class="slider-thumb" id="minSliderThumb">
+                                        <div class="slider-value" id="minSliderValue">0</div>
+                                    </div>
+                                    <div class="slider-thumb" id="maxSliderThumb">
+                                        <div class="slider-value" id="maxSliderValue">1,000,000</div>
+                                    </div>
+                                </div>
+                                
                                 <div class="amount-inputs">
                                     <input type="number" 
                                            id="minAmountInput" 
-                                           class="filter-input" 
-                                           style="width: 100px;"
+                                           class="form-control filter-input" 
+                                           style="width: 120px;"
                                            placeholder="Min"
                                            min="0"
                                            max="1000000">
-                                    <div class="amount-range-container">
-                                        <input type="range" 
-                                               id="amountRange" 
-                                               min="0" 
-                                               max="1000000" 
-                                               step="1000">
-                                    </div>
+                                    <span class="date-separator">-</span>
                                     <input type="number" 
                                            id="maxAmountInput" 
-                                           class="filter-input" 
-                                           style="width: 100px;"
+                                           class="form-control filter-input" 
+                                           style="width: 120px;"
                                            placeholder="Max"
                                            min="0"
                                            max="1000000">
@@ -1116,14 +1278,9 @@
                         </div>
                     </div>
 
-                    <!-- Boutons d'action -->
+                    <!-- Boutons d'action (supprimés mais gardés pour structure) -->
                     <div class="filter-actions">
-                        <button type="button" class="btn-clear" id="clearFiltersBtn">
-                            <i class="bi bi-x-circle"></i> <span class="btn-text">Effacer tout</span>
-                        </button>
-                        <button type="button" class="btn-apply" id="applyFiltersBtn">
-                            <i class="bi bi-check-circle"></i> <span class="btn-text">Appliquer</span>
-                        </button>
+                        <!-- Supprimé comme demandé -->
                     </div>
                 </div>
 
@@ -1132,42 +1289,50 @@
                     <!-- Les tags seront ajoutés ici dynamiquement -->
                 </div>
 
-                <!-- Tableau des dépenses -->
-                <div class="expense-table-container">
+                <!-- Pagination selector -->
+                <div class="pagination-selector-container">
+                    <div class="selector-info">
+                        <i class="bi bi-table"></i>
+                        <span id="selectorInfoText">Dépenses 1 à 10 sur 0</span>
+                    </div>
+                    <div class="items-per-page-select">
+                       
+                        <select id="itemsPerPageSelect">
+                            <option value="10">10</option>
+                            <option value="25" selected>25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- LISTE DES DÉPENSES (comme React Native) -->
+                <div class="expense-list-container" id="expenseListContainer">
                     <!-- Loading overlay -->
-                    <div class="loading-overlay" id="tableLoading" style="display: none;">
+                    <div class="loading-overlay" id="listLoading" style="display: none;">
                         <div class="spinner-border text-warning" role="status">
                             <span class="visually-hidden">Chargement...</span>
                         </div>
+                        <span class="ms-2">Chargement...</span>
                     </div>
 
-                    <!-- Table -->
-                    <table class="expense-table" id="expenseTable">
-                        <thead>
-                            <tr>
-                                <th>Catégorie</th>
-                                <th>Libellé</th>
-                                <th>Date</th>
-                                <th>Budget</th>
-                                <th>Montant</th>
-                                <th>Statut</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="expenseTableBody">
-                            <!-- Les dépenses seront chargées ici dynamiquement -->
-                        </tbody>
-                    </table>
+                    <!-- Les dépenses seront chargées ici dynamiquement -->
+                    <div id="expenseList">
+                        <!-- Les items de dépense seront ajoutés ici -->
+                    </div>
 
                     <!-- État vide -->
                     <div class="empty-state" id="emptyState">
                         <i class="bi bi-inbox"></i>
                         <h4>Aucune dépense trouvée</h4>
-    
+                        <p id="emptyStateMessage">Les dépenses apparaîtront ici</p>
+                        <button class="clear-filters-btn" id="clearFiltersBtn" style="display: none;">
+                            <i class="bi bi-x-circle"></i> Effacer les filtres
+                        </button>
                     </div>
                 </div>
 
-                <!-- PAGINATION SIMPLIFIÉE -->
+                <!-- PAGINATION -->
                 <div class="pagination-container" id="paginationContainer" style="display: none;">
                     <div class="pagination-controls">
                         <button class="page-btn" id="firstPageBtn" disabled>
@@ -1188,19 +1353,8 @@
                         </button>
                     </div>
                     
-                    <div class="items-per-page">
-                        <span class="btn-text">Afficher</span>
-                        <select id="itemsPerPageSelect">
-                            <option value="10">10</option>
-                            <option value="25" selected>25</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                        </select>
-                        <span class="btn-text">par page</span>
-                    </div>
-                    
                     <div class="pagination-info" id="paginationInfo">
-                        <span id="startIndex">1</span>-<span id="endIndex">10</span> sur <span id="totalItems">0</span>
+                        Page <span id="currentPage">1</span> sur <span id="totalPages">1</span>
                     </div>
                 </div>
             </div>
@@ -1216,7 +1370,7 @@
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- Modal des détails de dépense -->
+    <!-- Modal des détails de dépense (correspond à React Native) -->
     <div class="modal-overlay" id="expenseDetailModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1265,6 +1419,6 @@
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="expense-list-final.js"></script>
+    <script src="e.js"></script>
 </body>
 </html>

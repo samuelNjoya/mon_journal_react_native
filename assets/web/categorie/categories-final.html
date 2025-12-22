@@ -60,7 +60,7 @@
 
         /* En-têtes des sections */
         .section-header {
-            background: var(--yellow_color);
+            background: var(--bg-light);
             color: var(--text-primary);
             padding: 18px 15px;
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
@@ -390,6 +390,26 @@
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
 
+        /*categories systeme */
+        .system-category {
+            background-color: #f8f9fa !important;
+            border-left: 4px solid #6c757d !important;
+            opacity: 0.8;
+        }
+
+        .system-lock {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 4px;
+        }
+
+        .system-lock i {
+            font-size: 14px;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .main-container {
@@ -424,15 +444,20 @@
             }
 
             .category-item {
-                flex-direction: column;
-                align-items: flex-start;
+                /* flex-direction: column;
+                align-items: flex-start; */
+                flex-direction: row;
+                justify-content: center;
                 gap: 15px;
             }
 
             .category-actions {
-                align-self: flex-end;
+                /* align-self: flex-end;
                 width: 100%;
-                justify-content: flex-end;
+                justify-content: flex-end; */
+
+                 /* CONSERVER le comportement normal */
+        flex-shrink: 0;
             }
 
             .section-header {
@@ -501,8 +526,7 @@
         <div class="card">
             <div class="section-header">
                 <h3>
-                    <i class="bi bi-plus-circle"></i>
-                    Ajouter une nouvelle catégorie
+                    nouvelle catégorie
                 </h3>
             </div>
             <div class="card-body">
@@ -515,7 +539,7 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-add" id="addBtn">
-                        <i class="bi bi-plus-lg"></i> Ajouter
+                        Créer
                     </button>
                 </form>
 
@@ -526,10 +550,10 @@
         <div class="card">
             <div class="section-header">
                 <h3>
-                    <i class="bi bi-list-ul"></i>
+
                     Liste des catégories
                 </h3>
-                <span class="badge-count" id="categoryCount">0</span>
+                <!-- <span class="badge-count" id="categoryCount">0</span> -->
             </div>
             <div class="card-body">
                 <!-- Container pour la liste avec scroll -->
@@ -544,7 +568,7 @@
                 <div class="empty-state" id="emptyState">
                     <i class="bi bi-inbox"></i>
                     <h5>Aucune catégorie trouvée</h5>
-                    <p>Commencez par ajouter votre première catégorie</p>
+
                 </div>
             </div>
         </div>
