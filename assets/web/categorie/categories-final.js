@@ -246,8 +246,8 @@ class CategoriesManager {
                         </div>
                         ${isSystemCategory ? `
                             <div class="system-lock">
-                                <i class="bi bi-lock"></i>
-                                Catégorie système
+                               
+                                
                             </div>
                         ` : ''}
                     </div>
