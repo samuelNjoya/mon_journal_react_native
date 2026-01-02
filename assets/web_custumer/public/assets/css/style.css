@@ -1,0 +1,26 @@
+.opmodal-header{
+    background-color: #fddb2c;
+}
+
+.opmodal-success-header{
+    background-color: #0aefae;
+}
+
+.opmodal-title{
+    margin:16px;
+}
+
+.transaction_item:hover{
+    background-color: #e1e1ef;
+}
+.transaction_active{
+    background-color: #e1e1ef;
+}
+.detail_transaction{
+    padding:16px;
+}
+
+.disabled-li{
+    pointer-events: none;
+    opacity: 0.6;
+}
