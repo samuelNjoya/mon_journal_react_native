@@ -107,6 +107,9 @@ npx expo install @react-native-community/slider
 # React native modals
 npm install react-native-modal
 
+# pour la pagination
+npm install react-native-paper
+
 # Tuto React Native : Slider de présentation avec pagination
 
 
@@ -119,13 +122,6 @@ et lever le rouge partout  Ouvre la palette de commandes : Ctrl + Shift + P
 Tape : TypeScript: Restart TS server
 
 Appuie sur Entrée
-
-const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYjRkNjE4OTVlMzg0MzMxZTEwOWYyYzQ2Y2VkYWEwNTZhMzBhMWM1MDkyM2NkZDhkY2IyZWJhMjcxMzQyZmI0ZjUxN2U5ZGFjNWQ1ZWU2ZWQiLCJpYXQiOjE3NTYzOTQ1MzMsIm5iZiI6MTc1NjM5NDUzMywiZXhwIjoxNzg3OTMwNTMzLCJzdWIiOiIyMTI5NTEiLCJzY29wZXMiOltdfQ.AL8qjU5cr1sP5NFa4c90KCfQIIMZ3P3RuoX4w834xtKx-jzRd-36JC033cobielzT_fU8zUbeanJq3zT5mOMIp8z4vVy1lJaL1_nVyWDHQ7DmPyd9JgRjWn_WZ-AJ_zl5z86Trw4Ngf_fIYiSJhe-sB-hoWrPumZ2cf8qPAsRv7L9GqV8iLYIkIYTcNZTE57tjIt8IvzQBtJaxEgKBHKLORXLiC0m1kIV9e28hDlU1jc08gTNzq0fujH-YI914RISxRqwUJN5TltEV4luv6tDU23kgBkyF6abHvBX2BH3vO8oXtRBF-iZKg1ZBTjd4VACUZ_Y_sjiAgtFBuiQiUgTdbipChN7hfpVEbh4WKhX4SiEVJJL4oOZQ4ynxmMmAJdKkNOjOdjK90mBIsaSvpVdoQ5vjEfQOilWhG7Edgdf9ywaLx6wF8LYR6CMfF5XAGKzfaTYQoBLRJ1DPa4n_IsfkkpuNTdSN2iIyasFJn3sQerpsUPMPhmeyb7VixYTDUcme8xRr3EkYLOix0TbXrR3G80JiskGlQsiZ_wEfYs_diEEgB0Qu6vEsQnrgWFuWpqImk66RsWDZjxfseNGfnvnKD9ZTFa99wWFeJhoh7bkxc8jaSi7aDuY_nz_gfAulhF4BcjhMaGtlKJgYXtoUDkFAv3woSok8mQJ7THLojOFYs";
-
-  headers: {
-        Authorization: `Bearer ${token}`, 
-        Accept: 'application/json',
-      },
 
 
 1. Qu’est-ce que SecureStore ?
