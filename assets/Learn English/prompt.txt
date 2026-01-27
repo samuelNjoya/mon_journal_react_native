@@ -1,0 +1,152 @@
+Rôle :
+Tu es une équipe complète composée :
+
+d’un expert en pédagogie des langues
+
+d’un UX/UI designer mobile moderne
+
+d’un développeur senior React Native (Expo)
+
+Tu conçois une application mobile d’apprentissage de l’anglais, inspirée de Duolingo, mais avec :
+
+une identité propre
+
+une interface plus sobre et naturelle
+
+une structure pédagogique claire
+
+une architecture technique scalable
+
+🎯 Objectif de l’application
+
+Créer une application accessible à tous les niveaux (Beginner à Expert), permettant à chaque utilisateur :
+
+de choisir librement son niveau
+
+d’apprendre par mini-leçons ciblées
+
+de progresser sans surcharge cognitive
+
+🧱 Niveaux de difficulté
+
+Structure l’application autour de 4 niveaux indépendants :
+
+Beginner (A1)
+
+Elementary (A2)
+
+Intermediate (B1–B2)
+
+Advanced / Expert (C1–C2)
+
+Chaque niveau possède :
+
+ses propres leçons
+
+son vocabulaire
+
+ses exercices
+
+sa progression
+
+📱 Structure des écrans
+
+Définis clairement :
+
+Écran d’accueil (progression globale)
+
+Sélection du niveau
+
+Liste des leçons (par niveau)
+
+Écran de leçon
+
+Écran de validation
+
+UX :
+
+navigation fluide
+
+pas de gros boutons
+
+design discret, moderne, crédible
+
+📘 Structure d’une leçon (OBLIGATOIRE)
+
+Chaque leçon doit contenir :
+
+un objectif pédagogique clair
+
+une liste de vocabulaire
+
+des phrases complètes
+
+des audios
+
+2–3 exercices maximum
+
+une validation simple
+
+🧩 Exemple de modèle JSON (IMPORTANT)
+
+Fournis un modèle de données clair et prêt à coder :
+
+{
+  "level": "A1",
+  "lessonId": "a1_hello",
+  "title": "Greetings",
+  "objective": "Learn how to greet people politely",
+  "vocabulary": [
+    { "word": "Hello", "translation": "Bonjour", "audio": "hello.mp3" },
+    { "word": "Good morning", "translation": "Bonjour (matin)", "audio": "good_morning.mp3" }
+  ],
+  "sentences": [
+    { "text": "Hello, how are you?", "translation": "Bonjour, comment ça va ?" }
+  ],
+  "exercises": [
+    {
+      "type": "multiple_choice",
+      "question": "How do you say 'Bonjour'?",
+      "options": ["Good night", "Hello", "Thank you"],
+      "answer": "Hello"
+    }
+  ]
+}
+
+🛠️ Contraintes techniques
+
+Expo + React Native
+
+Leçons stockées en JSON
+
+Audio avec expo-av
+
+Progression avec AsyncStorage
+
+Architecture modulaire
+
+🧠 Pédagogie
+
+Répétition intelligente
+
+Phrases réelles
+
+Moins d’aide quand le niveau monte
+
+Pas de grammaire lourde
+
+📦 Résultats attendus
+
+Génère :
+
+Architecture complète de l’application
+
+Liste de leçons pour chaque niveau
+
+Exemples concrets de leçons
+
+Modèles de données
+
+Conseils UI/UX
+
+Logique de progression utilisateur

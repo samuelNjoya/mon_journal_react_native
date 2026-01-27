@@ -1,0 +1,95 @@
+C'est parfait. Voici la version **2.0 de ton prompt**, enrichie de mes innovations techniques et pédagogiques (STT, AsyncStorage, SRS, Pont Contextuel) tout en respectant ton identité de marque **SmartEnglish**.
+
+Ce document est maintenant prêt à être soumis à un outil de génération de code ou à servir de cahier des charges ultime.
+
+---
+
+# 🚀 Prompt : Projet "SmartEnglish" (Version Optimisée)
+
+**Rôle :** Tu es une équipe de production complète (Expert Pédagogique, UX Designer Senior, Développeur Senior React Native Expo). Ta mission est de coder **SmartEnglish**, une application mobile d'apprentissage de l'anglais moderne, sobre et extrêmement fluide.
+
+### 🎯 Vision & Philosophie
+
+* **Accessibilité Totale :** Pas de niveaux verrouillés. De A1 à C2, l'utilisateur choisit son défi.
+* **Minimalisme Productif :** 5 écrans maximum, aucune pollution visuelle.
+* **Intelligence Embarquée :** Persistance locale avec `AsyncStorage` pour un usage hors-ligne et une fluidité totale.
+
+---
+
+### 🖥️ Architecture des 5 Écrans (UI Fusionnée)
+
+1️⃣ **The Path (Accueil & Progression) :**
+
+* Header dynamique : "Bonjour [Nom] 👋", Streak active, Total XP.
+* **Sélecteur Libre :** Un menu discret pour passer instantanément d'un niveau (A1, B2, etc.) à l'autre.
+* **Timeline Verticale :** Un flux épuré de leçons. Chaque bulle indique le statut (Terminé / En cours / À faire).
+* Bouton "Révision Rapide" : Un algorithme **SRS** (Répétition espacée) qui génère un quiz basé sur les erreurs passées.
+
+2️⃣ **The Lab (Contenu de Leçon) :**
+
+* Interface "Focus" : Cartes fines, typographie premium.
+* **Audio Immersif :** Intégration `expo-av` / `expo-speech` (TTS) pour chaque mot/phrase.
+* Bouton "Ajouter au Deck" : Permet de sauvegarder un mot difficile dans la base locale.
+
+3️⃣ **The Arena (Pratique & Oral) :**
+
+* Mix de quiz : QCM, phrases à trous, glisser-déposer.
+* **Innovation "Voice Check" :** Intégration du **Speech-to-Text** (reconnaissance vocale) pour valider la prononciation de l'utilisateur sur les phrases clés.
+* Feedback : Micro-animations pour le succès et haptique (vibration légère) pour les erreurs.
+
+4️⃣ **The Bridge (Traduction & Deck Perso) :**
+
+* Outil de traduction FR ↔ EN (via API LibreTranslate/OwlBot).
+* **Innovation "Pont Contextuel" :** Chaque résultat de traduction peut être enregistré d'un clic dans le "Dictionnaire Personnel" de l'utilisateur.
+* Liste de révision : Affichage des mots sauvegardés sous forme de cartes flash.
+
+5️⃣ **The Identity (Stats & Profil) :**
+
+* Graphiques de progression (XP par semaine).
+* Mur des Badges : Récompenses symboliques (ex: "Early Bird", "Pronunciation King").
+* Gestion du stockage local et préférences de l'IA vocale.
+
+---
+
+### 🧱 Structure Technique & Logique Data
+
+**Persistance (AsyncStorage) :**
+L'application doit sauvegarder localement :
+
+* `user_stats` : { xp: number, streak: number, last_active: Date }
+* `personal_deck` : Array d'objets { word: string, translation: string, strength: number }
+* `progress_map` : Suivi des leçons complétées par niveau.
+
+**Exemple de JSON de leçon (Extensible) :**
+
+```json
+{
+  "level": "B2",
+  "lessonId": "b2_business_meeting",
+  "title": "Business Context",
+  "vocabulary": [
+    { "word": "Stakeholder", "translation": "Partie prenante", "phonetic": "/ˈsteɪk.hoʊl.dɚ/" }
+  ],
+  "oral_exercise": {
+    "target_sentence": "We need to align with our stakeholders.",
+    "difficulty": 4
+  }
+}
+
+```
+
+---
+
+### 🎨 Design & UX
+
+* **Style :** "Modern Professional" (Inspiration : Notion / Linear).
+* **Palette :** Fond blanc cassé/sombre, texte anthracite, une seule couleur d'accent (Bleu Royal ou Indigo).
+* **Navigation :** Tab bar ultra-fine en bas, aucune transition lourde.
+
+### ✅ Résultat Attendu
+
+Génère la structure de fichiers Expo, configure la navigation entre les 5 écrans, et implémente la logique `AsyncStorage` pour le "Personal Deck" dans l'écran **The Bridge**.
+
+---
+
+**C'est maintenant ton prompt final.** Souhaites-tu que je commence dès maintenant à générer la structure de fichiers React Native (Expo) et le code du premier écran (The Path) basé sur ce document ?

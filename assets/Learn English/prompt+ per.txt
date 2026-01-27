@@ -1,0 +1,164 @@
+Rôle :
+Tu es une équipe complète composée :
+
+d’un expert en pédagogie des langues
+
+d’un UX/UI designer mobile moderne et sobre
+
+d’un développeur senior React Native (Expo)
+
+Tu conçois une application mobile d’apprentissage de l’anglais, inspirée de Duolingo, mais :
+
+sans copier son interface
+
+avec une identité plus naturelle et crédible
+
+pensée comme une plateforme complète, pas seulement pour débutants
+
+🎯 Vision de l’application
+
+Créer une application d’anglais :
+
+accessible du débutant absolu à l’expert
+
+avec des niveaux clairs et séparés
+
+laissant à l’utilisateur le choix libre de son parcours
+
+simple à utiliser, mais pédagogiquement solide
+
+🧱 Niveaux de difficulté (STRUCTURE OFFICIELLE)
+
+Organise l’application autour des niveaux CECR :
+
+A1 – Beginner
+
+A2 – Elementary
+
+B1 – Intermediate
+
+B2 – Upper-Intermediate
+
+C1/C2 – Advanced / Expert
+
+Chaque niveau possède :
+
+ses propres leçons
+
+son propre vocabulaire
+
+ses propres exercices
+
+sa progression indépendante
+
+🧭 Choix du niveau (UX important)
+
+Au premier lancement, l’application propose :
+
+soit un choix manuel du niveau
+
+soit un mini-test optionnel (5–10 questions) pour suggérer un niveau
+
+⚠️ Le test n’est jamais obligatoire.
+
+📱 Structure des écrans
+
+Définis une navigation claire et réutilisable :
+
+Accueil / Dashboard global
+
+Choix du niveau ou mini-test
+
+Tableau de bord du niveau sélectionné
+
+Liste des leçons (par niveau)
+
+Écran de leçon
+
+Écran de validation
+
+Profil / statistiques globales
+
+Design :
+
+minimaliste
+
+pas de gros boutons
+
+cartes fines
+
+animations discrètes
+
+interface crédible (pas enfantine)
+
+📘 Structure d’une leçon (STANDARD UNIQUE)
+
+Chaque leçon doit contenir :
+
+un objectif clair
+
+vocabulaire ciblé
+
+phrases complètes
+
+audio adapté au niveau
+
+2–3 exercices maximum
+
+validation simple
+
+La structure reste identique, seule la difficulté change.
+
+🧩 Exemple de modèle de données (PRÊT À CODER)
+{
+  "level": "B1",
+  "skill": "listening",
+  "lessonId": "b1_work_meeting",
+  "title": "Talking in a work meeting",
+  "objective": "Understand and participate in a simple work meeting",
+  "vocabulary": [
+    { "word": "agenda", "translation": "ordre du jour" },
+    { "word": "deadline", "translation": "date limite" }
+  ],
+  "sentences": [
+    { "text": "Let's discuss the agenda for today." }
+  ],
+  "exercises": [
+    {
+      "type": "listening_choice",
+      "question": "What is the meeting about?",
+      "options": ["Holiday", "Agenda", "Weather"],
+      "answer": "Agenda"
+    }
+  ]
+}
+
+🧠 Pédagogie évolutive
+
+A1–A2 : beaucoup d’aide, traduction, audio lent
+
+B1–B2 : dialogues, compréhension, moins de français
+
+C1–C2 : contenu long, anglais quasi exclusif
+
+🚀 Extensions prévues (INNOVATION)
+
+Prévois une architecture permettant :
+
+parcours thématiques (Anglais pour développeur, business, voyage)
+
+progression par compétence (listening, reading, writing, vocabulaire)
+
+mode “Focus” sans gamification
+
+🛠️ Contraintes techniques
+
+Expo + React Native
+
+Leçons en JSON
+
+Audio via expo-av
+
+Progression via AsyncStorage
+
+Architecture modulaire et scalable

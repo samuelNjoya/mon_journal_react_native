@@ -1,0 +1,157 @@
+Rôle :
+Tu es une équipe complète composée :
+
+d’un expert en pédagogie des langues,
+
+d’un UX/UI designer mobile moderne et sobre,
+
+d’un développeur senior React Native (Expo).
+
+Tu conçois une application mobile d’apprentissage de l’anglais, inspirée de Duolingo, mais :
+
+sans copier son interface
+
+avec une UI naturelle et crédible,
+
+limitée à 5 écrans maximum,
+
+intégrant gamification, progression multi-niveaux, audio, quiz, traduction FR ↔ EN, et choix libre de niveau.
+
+🎯 Vision de l’application
+
+Créer une application d’anglais :
+
+accessible du débutant absolu (A1) à l’expert (C1/C2)
+
+avec 5 écrans maximum, regroupant toutes les fonctionnalités essentielles
+
+avec progression claire et gamification naturelle (XP, streak, badges, stats)
+
+avec possibilité de traduire phrases et mots FR ↔ EN via API gratuite
+
+🧱 Niveaux de difficulté
+Niveau	CECR	Objectif pédagogique
+Beginner	A1	Salutations, se présenter, chiffres, jours
+Elementary	A2	Vie quotidienne, phrases simples
+Intermediate	B1	Discussions, travail, voyage
+Upper-Intermediate	B2	Réunions, films, articles simples
+Advanced/Expert	C1-C2	Articles techniques, conférences, expressions idiomatiques
+
+Choix du niveau : manuel ou mini-test (5–10 questions) à l’ouverture
+
+Progression par compétence (oral, écrit, vocabulaire) à terme
+
+🖥️ Structure des 5 écrans
+1️⃣ Écran d’accueil / Dashboard global
+
+Accueil personnalisé : "Bonjour [Nom] !"
+
+Sélection du niveau / mini-test
+
+Progression globale et streak (jours actifs)
+
+Boutons discrets pour mode focus, paramètres
+
+2️⃣ Écran tableau de bord du niveau sélectionné
+
+Leçon du jour
+
+Liste des leçons disponibles dans ce niveau
+
+Points / XP / badges / temps passé
+
+Accès rapide à révisions
+
+3️⃣ Écran leçon
+
+Objectif clair
+
+Vocabulaire et phrases
+
+Audio intégré via gTTS / expo-av
+
+Boutons naturels, cartes fines
+
+Validation de la leçon
+
+4️⃣ Écran exercices / quiz
+
+QCM, phrases à compléter, associer mot ↔ image
+
+Contenu adapté au niveau (A1 → C2)
+
+Gamification : XP, bonus streak
+
+Feedback immédiat pour l’utilisateur
+
+5️⃣ Écran traduction & profil
+
+Traduction FR ↔ EN via API gratuite (LibreTranslate, OwlBot, etc.)
+
+Possibilité de sauvegarder phrases traduites
+
+Stats globales : points, streak, temps, compétences par niveau
+
+Gestion de compte, changement de niveau
+
+🧩 Structure des leçons (JSON)
+{
+  "level": "A2",
+  "skill": "vocabulary",
+  "lessonId": "a2_food",
+  "title": "Food & Drinks",
+  "objective": "Learn common food and drink vocabulary",
+  "vocabulary": [
+    { "word": "Apple", "translation": "Pomme", "audio": "apple.mp3" },
+    { "word": "Water", "translation": "Eau", "audio": "water.mp3" }
+  ],
+  "sentences": [
+    { "text": "I would like some water.", "translation": "Je voudrais de l’eau." }
+  ],
+  "exercises": [
+    {
+      "type": "multiple_choice",
+      "question": "How do you say 'Pomme'?",
+      "options": ["Apple", "Orange", "Banana"],
+      "answer": "Apple"
+    }
+  ]
+}
+
+🛠️ APIs gratuites recommandées
+Usage	API gratuite
+Vocabulaire / définitions	OwlBot, Free Dictionary API
+Audio / Prononciation	gTTS / Google TTS, ResponsiveVoice.js
+Quiz / exercices	Open Trivia DB, JSON maison
+Traduction FR ↔ EN	LibreTranslate, OwlBot
+🧠 Pédagogie et gamification
+
+Répétition intelligente selon le niveau
+
+Aide décroissante : Beginner → Expert
+
+Gamification discrète : XP, streak, badges, stats
+
+Mode Focus : apprentissage sans pression
+
+🎨 Design et UX
+
+Minimaliste et moderne
+
+Cartes fines, navigation fluide
+
+Pas de gros boutons, UI naturelle
+
+Animations subtiles
+
+✅ Résultat attendu :
+
+Une app 5 écrans, complète, scalable, crédible
+
+Tous niveaux et fonctionnalités intégrés
+
+Gamification et motivation naturelles
+
+Traduction FR ↔ EN fonctionnelle
+
+Base JSON + APIs prête à coder en Expo
