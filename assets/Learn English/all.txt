@@ -1,0 +1,573 @@
+v1
+Rôle :
+Tu es une équipe complète composée :
+
+d’un expert en pédagogie des langues
+
+d’un UX/UI designer mobile moderne
+
+d’un développeur senior React Native (Expo)
+
+Tu conçois une application mobile d’apprentissage de l’anglais, inspirée de Duolingo, mais avec :
+
+une identité propre
+
+une interface plus sobre et naturelle
+
+une structure pédagogique claire
+
+une architecture technique scalable
+
+🎯 Objectif de l’application
+
+Créer une application accessible à tous les niveaux (Beginner à Expert), permettant à chaque utilisateur :
+
+de choisir librement son niveau
+
+d’apprendre par mini-leçons ciblées
+
+de progresser sans surcharge cognitive
+
+🧱 Niveaux de difficulté
+
+Structure l’application autour de 4 niveaux indépendants :
+
+Beginner (A1)
+
+Elementary (A2)
+
+Intermediate (B1–B2)
+
+Advanced / Expert (C1–C2)
+
+Chaque niveau possède :
+
+ses propres leçons
+
+son vocabulaire
+
+ses exercices
+
+sa progression
+
+📱 Structure des écrans
+
+Définis clairement :
+
+Écran d’accueil (progression globale)
+
+Sélection du niveau
+
+Liste des leçons (par niveau)
+
+Écran de leçon
+
+Écran de validation
+
+UX :
+
+navigation fluide
+
+pas de gros boutons
+
+design discret, moderne, crédible
+
+📘 Structure d’une leçon (OBLIGATOIRE)
+
+Chaque leçon doit contenir :
+
+un objectif pédagogique clair
+
+une liste de vocabulaire
+
+des phrases complètes
+
+des audios
+
+2–3 exercices maximum
+
+une validation simple
+
+🧩 Exemple de modèle JSON (IMPORTANT)
+
+Fournis un modèle de données clair et prêt à coder :
+
+{
+  "level": "A1",
+  "lessonId": "a1_hello",
+  "title": "Greetings",
+  "objective": "Learn how to greet people politely",
+  "vocabulary": [
+    { "word": "Hello", "translation": "Bonjour", "audio": "hello.mp3" },
+    { "word": "Good morning", "translation": "Bonjour (matin)", "audio": "good_morning.mp3" }
+  ],
+  "sentences": [
+    { "text": "Hello, how are you?", "translation": "Bonjour, comment ça va ?" }
+  ],
+  "exercises": [
+    {
+      "type": "multiple_choice",
+      "question": "How do you say 'Bonjour'?",
+      "options": ["Good night", "Hello", "Thank you"],
+      "answer": "Hello"
+    }
+  ]
+}
+
+🛠️ Contraintes techniques
+
+Expo + React Native
+
+Leçons stockées en JSON
+
+Audio avec expo-av
+
+Progression avec AsyncStorage
+
+Architecture modulaire
+
+🧠 Pédagogie
+
+Répétition intelligente
+
+Phrases réelles
+
+Moins d’aide quand le niveau monte
+
+Pas de grammaire lourde
+
+📦 Résultats attendus
+
+Génère :
+
+Architecture complète de l’application
+
+Liste de leçons pour chaque niveau
+
+Exemples concrets de leçons
+
+Modèles de données
+
+Conseils UI/UX
+
+Logique de progression utilisateur
+
+v2
+Rôle :
+Tu es une équipe complète composée :
+
+d’un expert en pédagogie des langues
+
+d’un UX/UI designer mobile moderne et sobre
+
+d’un développeur senior React Native (Expo)
+
+Tu conçois une application mobile d’apprentissage de l’anglais, inspirée de Duolingo, mais :
+
+sans copier son interface
+
+avec une identité plus naturelle et crédible
+
+pensée comme une plateforme complète, pas seulement pour débutants
+
+🎯 Vision de l’application
+
+Créer une application d’anglais :
+
+accessible du débutant absolu à l’expert
+
+avec des niveaux clairs et séparés
+
+laissant à l’utilisateur le choix libre de son parcours
+
+simple à utiliser, mais pédagogiquement solide
+
+🧱 Niveaux de difficulté (STRUCTURE OFFICIELLE)
+
+Organise l’application autour des niveaux CECR :
+
+A1 – Beginner
+
+A2 – Elementary
+
+B1 – Intermediate
+
+B2 – Upper-Intermediate
+
+C1/C2 – Advanced / Expert
+
+Chaque niveau possède :
+
+ses propres leçons
+
+son propre vocabulaire
+
+ses propres exercices
+
+sa progression indépendante
+
+🧭 Choix du niveau (UX important)
+
+Au premier lancement, l’application propose :
+
+soit un choix manuel du niveau
+
+soit un mini-test optionnel (5–10 questions) pour suggérer un niveau
+
+⚠️ Le test n’est jamais obligatoire.
+
+📱 Structure des écrans
+
+Définis une navigation claire et réutilisable :
+
+Accueil / Dashboard global
+
+Choix du niveau ou mini-test
+
+Tableau de bord du niveau sélectionné
+
+Liste des leçons (par niveau)
+
+Écran de leçon
+
+Écran de validation
+
+Profil / statistiques globales
+
+Design :
+
+minimaliste
+
+pas de gros boutons
+
+cartes fines
+
+animations discrètes
+
+interface crédible (pas enfantine)
+
+📘 Structure d’une leçon (STANDARD UNIQUE)
+
+Chaque leçon doit contenir :
+
+un objectif clair
+
+vocabulaire ciblé
+
+phrases complètes
+
+audio adapté au niveau
+
+2–3 exercices maximum
+
+validation simple
+
+La structure reste identique, seule la difficulté change.
+
+🧩 Exemple de modèle de données (PRÊT À CODER)
+{
+  "level": "B1",
+  "skill": "listening",
+  "lessonId": "b1_work_meeting",
+  "title": "Talking in a work meeting",
+  "objective": "Understand and participate in a simple work meeting",
+  "vocabulary": [
+    { "word": "agenda", "translation": "ordre du jour" },
+    { "word": "deadline", "translation": "date limite" }
+  ],
+  "sentences": [
+    { "text": "Let's discuss the agenda for today." }
+  ],
+  "exercises": [
+    {
+      "type": "listening_choice",
+      "question": "What is the meeting about?",
+      "options": ["Holiday", "Agenda", "Weather"],
+      "answer": "Agenda"
+    }
+  ]
+}
+
+🧠 Pédagogie évolutive
+
+A1–A2 : beaucoup d’aide, traduction, audio lent
+
+B1–B2 : dialogues, compréhension, moins de français
+
+C1–C2 : contenu long, anglais quasi exclusif
+
+🚀 Extensions prévues (INNOVATION)
+
+Prévois une architecture permettant :
+
+parcours thématiques (Anglais pour développeur, business, voyage)
+
+progression par compétence (listening, reading, writing, vocabulaire)
+
+mode “Focus” sans gamification
+
+🛠️ Contraintes techniques
+
+Expo + React Native
+
+Leçons en JSON
+
+Audio via expo-av
+
+Progression via AsyncStorage
+
+Architecture modulaire et scalable
+
+v3
+Rôle :
+Tu es une équipe complète composée :
+
+d’un expert en pédagogie des langues,
+
+d’un UX/UI designer mobile moderne et sobre,
+
+d’un développeur senior React Native (Expo).
+
+Tu conçois une application mobile d’apprentissage de l’anglais, inspirée de Duolingo, mais :
+
+sans copier son interface
+
+avec une UI naturelle et crédible,
+
+limitée à 5 écrans maximum,
+
+intégrant gamification, progression multi-niveaux, audio, quiz, traduction FR ↔ EN, et choix libre de niveau.
+
+🎯 Vision de l’application
+
+Créer une application d’anglais :
+
+accessible du débutant absolu (A1) à l’expert (C1/C2)
+
+avec 5 écrans maximum, regroupant toutes les fonctionnalités essentielles
+
+avec progression claire et gamification naturelle (XP, streak, badges, stats)
+
+avec possibilité de traduire phrases et mots FR ↔ EN via API gratuite
+
+🧱 Niveaux de difficulté
+Niveau	CECR	Objectif pédagogique
+Beginner	A1	Salutations, se présenter, chiffres, jours
+Elementary	A2	Vie quotidienne, phrases simples
+Intermediate	B1	Discussions, travail, voyage
+Upper-Intermediate	B2	Réunions, films, articles simples
+Advanced/Expert	C1-C2	Articles techniques, conférences, expressions idiomatiques
+
+Choix du niveau : manuel ou mini-test (5–10 questions) à l’ouverture
+
+Progression par compétence (oral, écrit, vocabulaire) à terme
+
+🖥️ Structure des 5 écrans
+1️⃣ Écran d’accueil / Dashboard global
+
+Accueil personnalisé : "Bonjour [Nom] !"
+
+Sélection du niveau / mini-test
+
+Progression globale et streak (jours actifs)
+
+Boutons discrets pour mode focus, paramètres
+
+2️⃣ Écran tableau de bord du niveau sélectionné
+
+Leçon du jour
+
+Liste des leçons disponibles dans ce niveau
+
+Points / XP / badges / temps passé
+
+Accès rapide à révisions
+
+3️⃣ Écran leçon
+
+Objectif clair
+
+Vocabulaire et phrases
+
+Audio intégré via gTTS / expo-av
+
+Boutons naturels, cartes fines
+
+Validation de la leçon
+
+4️⃣ Écran exercices / quiz
+
+QCM, phrases à compléter, associer mot ↔ image
+
+Contenu adapté au niveau (A1 → C2)
+
+Gamification : XP, bonus streak
+
+Feedback immédiat pour l’utilisateur
+
+5️⃣ Écran traduction & profil
+
+Traduction FR ↔ EN via API gratuite (LibreTranslate, OwlBot, etc.)
+
+Possibilité de sauvegarder phrases traduites
+
+Stats globales : points, streak, temps, compétences par niveau
+
+Gestion de compte, changement de niveau
+
+🧩 Structure des leçons (JSON)
+{
+  "level": "A2",
+  "skill": "vocabulary",
+  "lessonId": "a2_food",
+  "title": "Food & Drinks",
+  "objective": "Learn common food and drink vocabulary",
+  "vocabulary": [
+    { "word": "Apple", "translation": "Pomme", "audio": "apple.mp3" },
+    { "word": "Water", "translation": "Eau", "audio": "water.mp3" }
+  ],
+  "sentences": [
+    { "text": "I would like some water.", "translation": "Je voudrais de l’eau." }
+  ],
+  "exercises": [
+    {
+      "type": "multiple_choice",
+      "question": "How do you say 'Pomme'?",
+      "options": ["Apple", "Orange", "Banana"],
+      "answer": "Apple"
+    }
+  ]
+}
+
+🛠️ APIs gratuites recommandées
+Usage	API gratuite
+Vocabulaire / définitions	OwlBot, Free Dictionary API
+Audio / Prononciation	gTTS / Google TTS, ResponsiveVoice.js
+Quiz / exercices	Open Trivia DB, JSON maison
+Traduction FR ↔ EN	LibreTranslate, OwlBot
+🧠 Pédagogie et gamification
+
+Répétition intelligente selon le niveau
+
+Aide décroissante : Beginner → Expert
+
+Gamification discrète : XP, streak, badges, stats
+
+Mode Focus : apprentissage sans pression
+
+🎨 Design et UX
+
+Minimaliste et moderne
+
+Cartes fines, navigation fluide
+
+Pas de gros boutons, UI naturelle
+
+Animations subtiles
+
+✅ Résultat attendu :
+
+Une app 5 écrans, complète, scalable, crédible
+
+Tous niveaux et fonctionnalités intégrés
+
+Gamification et motivation naturelles
+
+Traduction FR ↔ EN fonctionnelle
+
+Base JSON + APIs prête à coder en Expo
+
+v4
+C'est parfait. Voici la version **2.0 de ton prompt**, enrichie de mes innovations techniques et pédagogiques (STT, AsyncStorage, SRS, Pont Contextuel) tout en respectant ton identité de marque **SmartEnglish**.
+
+Ce document est maintenant prêt à être soumis à un outil de génération de code ou à servir de cahier des charges ultime.
+
+---
+
+# 🚀 Prompt : Projet "SmartEnglish" (Version Optimisée)
+
+**Rôle :** Tu es une équipe de production complète (Expert Pédagogique, UX Designer Senior, Développeur Senior React Native Expo). Ta mission est de coder **SmartEnglish**, une application mobile d'apprentissage de l'anglais moderne, sobre et extrêmement fluide.
+
+### 🎯 Vision & Philosophie
+
+* **Accessibilité Totale :** Pas de niveaux verrouillés. De A1 à C2, l'utilisateur choisit son défi.
+* **Minimalisme Productif :** 5 écrans maximum, aucune pollution visuelle.
+* **Intelligence Embarquée :** Persistance locale avec `AsyncStorage` pour un usage hors-ligne et une fluidité totale.
+
+---
+
+### 🖥️ Architecture des 5 Écrans (UI Fusionnée)
+
+1️⃣ **The Path (Accueil & Progression) :**
+
+* Header dynamique : "Bonjour [Nom] 👋", Streak active, Total XP.
+* **Sélecteur Libre :** Un menu discret pour passer instantanément d'un niveau (A1, B2, etc.) à l'autre.
+* **Timeline Verticale :** Un flux épuré de leçons. Chaque bulle indique le statut (Terminé / En cours / À faire).
+* Bouton "Révision Rapide" : Un algorithme **SRS** (Répétition espacée) qui génère un quiz basé sur les erreurs passées.
+
+2️⃣ **The Lab (Contenu de Leçon) :**
+
+* Interface "Focus" : Cartes fines, typographie premium.
+* **Audio Immersif :** Intégration `expo-av` / `expo-speech` (TTS) pour chaque mot/phrase.
+* Bouton "Ajouter au Deck" : Permet de sauvegarder un mot difficile dans la base locale.
+
+3️⃣ **The Arena (Pratique & Oral) :**
+
+* Mix de quiz : QCM, phrases à trous, glisser-déposer.
+* **Innovation "Voice Check" :** Intégration du **Speech-to-Text** (reconnaissance vocale) pour valider la prononciation de l'utilisateur sur les phrases clés.
+* Feedback : Micro-animations pour le succès et haptique (vibration légère) pour les erreurs.
+
+4️⃣ **The Bridge (Traduction & Deck Perso) :**
+
+* Outil de traduction FR ↔ EN (via API LibreTranslate/OwlBot).
+* **Innovation "Pont Contextuel" :** Chaque résultat de traduction peut être enregistré d'un clic dans le "Dictionnaire Personnel" de l'utilisateur.
+* Liste de révision : Affichage des mots sauvegardés sous forme de cartes flash.
+
+5️⃣ **The Identity (Stats & Profil) :**
+
+* Graphiques de progression (XP par semaine).
+* Mur des Badges : Récompenses symboliques (ex: "Early Bird", "Pronunciation King").
+* Gestion du stockage local et préférences de l'IA vocale.
+
+---
+
+### 🧱 Structure Technique & Logique Data
+
+**Persistance (AsyncStorage) :**
+L'application doit sauvegarder localement :
+
+* `user_stats` : { xp: number, streak: number, last_active: Date }
+* `personal_deck` : Array d'objets { word: string, translation: string, strength: number }
+* `progress_map` : Suivi des leçons complétées par niveau.
+
+**Exemple de JSON de leçon (Extensible) :**
+
+```json
+{
+  "level": "B2",
+  "lessonId": "b2_business_meeting",
+  "title": "Business Context",
+  "vocabulary": [
+    { "word": "Stakeholder", "translation": "Partie prenante", "phonetic": "/ˈsteɪk.hoʊl.dɚ/" }
+  ],
+  "oral_exercise": {
+    "target_sentence": "We need to align with our stakeholders.",
+    "difficulty": 4
+  }
+}
+
+```
+
+---
+
+### 🎨 Design & UX
+
+* **Style :** "Modern Professional" (Inspiration : Notion / Linear).
+* **Palette :** Fond blanc cassé/sombre, texte anthracite, une seule couleur d'accent (Bleu Royal ou Indigo).
+* **Navigation :** Tab bar ultra-fine en bas, aucune transition lourde.
+
+### ✅ Résultat Attendu
+
+Génère la structure de fichiers Expo, configure la navigation entre les 5 écrans, et implémente la logique `AsyncStorage` pour le "Personal Deck" dans l'écran **The Bridge**.
+
+et dans le prompt final tu ajoutera aussi les histoire en anglais (tu aura plusieur theme et tu saura comment intégré dans les ecrans c'est toi l'expert je pense que j'avais omis ça )
