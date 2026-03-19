@@ -16,6 +16,7 @@ export class UsersController {
   findOne(@Param('id') id: number): User | { message: string }{
      const user = this.usersService.findOne(+id);
   if (!user) {
+    // eslint-disable-next-line prettier/prettier
     return { message: `Utilisateur avec l'ID ${id} non trouvé.` };
   }
   return user;

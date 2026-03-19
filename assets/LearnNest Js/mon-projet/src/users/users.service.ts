@@ -11,7 +11,7 @@ export class UsersService {
   }
 
   findOne(id: number): User | undefined {
-    return this.users.find(user => user.id === id);
+    return this.users.find((user) => user.id === id);
   }
 
   create(user: User): User {
@@ -21,12 +21,12 @@ export class UsersService {
   }
 
   update(id: number, updatedUser: User): User{
-    const index = this.users.findIndex(user => user.id === id);
+    const index = this.users.findIndex((user) => user.id === id);
     this.users[index] = { ...updatedUser, id };
     return this.users[index];
   }
 
   delete(id: number): void {
-    this.users = this.users.filter(user => user.id !== id);
+    this.users = this.users.filter((user) => user.id !== id);
   }
 }
