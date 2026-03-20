@@ -56,4 +56,9 @@ export class UsersService {
     if (!user) throw new NotFoundException('Utilisateur non trouvé');
     return this.userRepository.remove(user);
   }
+
+  // Méthode pour trouver un utilisateur par email (utile pour l'authentification)
+  async findByEmail(email: string) {
+  return this.userRepository.findOne({ where: { email } });
+  }
 }
