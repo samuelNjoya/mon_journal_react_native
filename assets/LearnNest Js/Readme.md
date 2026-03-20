@@ -88,3 +88,18 @@ npx typeorm migration:run
 ❌ ne pas gérer les erreurs
 
 # les dto sont pour les api et les entity pour la bd
+
+### les dependances pour JWT
+npm install @nestjs/jwt @nestjs/passport passport passport-jwt
+npm install -D @types/passport-jwt
+# les Alias
+nest g mo auth && nest g s auth && nest g co auth
+
+ce token contient 
+{
+  "sub": 1,
+  "email": "test@gmail.com",
+  "role": "user"
+}
+
+ "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjExLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NzQwMDk0MTksImV4cCI6MTc3NDA5NTgxOX0.F4m2r_05illvcL12E8IHeJVMP14l3qDovOeT6b8QWjk"
