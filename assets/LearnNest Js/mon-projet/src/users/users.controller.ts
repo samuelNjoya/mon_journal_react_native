@@ -1,39 +1,35 @@
-// src/users/users.controller.ts
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+import {
+  Controller, Get,Post,Body, Param,Put, Delete,} from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User } from './user.entity';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private usersService: UsersService) {}
+
+  @Post()
+  create(@Body() body: CreateUserDto) {
+    return this.usersService.create(body);
+  }
 
   @Get()
-  findAll(): User[] {
+  findAll() {
     return this.usersService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): User | { message: string }{
-     const user = this.usersService.findOne(+id);
-  if (!user) {
-    // eslint-disable-next-line prettier/prettier
-    return { message: `Utilisateur avec l'ID ${id} non trouvé.` };
-  }
-  return user;
-  }
-
-  @Post()
-  create(@Body() user: User): User {
-    return this.usersService.create(user);
+  findOne(@Param('id') id: string) {
+    return this.usersService.findOne(Number(id));
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() user: User): User {
-    return this.usersService.update(+id, user);
+  update(@Param('id') id: string, @Body() body: UpdateUserDto) {
+    return this.usersService.update(Number(id), body);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: number): void {
-    return this.usersService.delete(+id);
+  remove(@Param('id') id: string) {
+    return this.usersService.remove(Number(id));
   }
 }

@@ -70,3 +70,21 @@ Détecte les erreurs de syntaxe, les mauvaises pratiques et applique les règles
 
 ### ce que je comprends
 Entity = table
+
+# outils de validation 
+npm install class-validator class-transformer
+# ajout du hash du mot de passe 
+npm install bcrypt
+npm install -D @types/bcrypt
+
+# Migration plus tart 
+npx typeorm migration:generate -n InitUser
+npx typeorm migration:run
+
+# a éviter
+❌ oublier ValidationPipe
+❌ stocker password en clair
+❌ ne pas utiliser DTO
+❌ ne pas gérer les erreurs
+
+# les dto sont pour les api et les entity pour la bd

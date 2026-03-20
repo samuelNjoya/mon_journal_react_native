@@ -14,7 +14,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       password: 'root',
       database: 'predicam',
       autoLoadEntities: true,
-      synchronize: true, //  dev seulement
+      synchronize: true, //  dev seulement créer les tables automatiquement, à ne pas utiliser en production
     }),
     UsersModule],
   controllers: [AppController],
